@@ -23,7 +23,7 @@ export default function LoginPage() {
     <AuthForm title="Whiskey App Login" onSubmit={handleLogin}>
       <AuthInput
         id="username"
-        label="Username or Email"
+        label="Username"
         type="text"
         placeholder="사용자 아이디"
         icon={<UserIcon className="inline-block h-5 w-5 mr-2" />}

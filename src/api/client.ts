@@ -1,15 +1,5 @@
+import type { ApiError, ApiResponse } from "@/types";
 import axios, { type AxiosInstance, type AxiosResponse, type AxiosError } from "axios";
-
-interface ApiError extends Error {
-  statusCode?: string;
-  statusText?: string;
-  details?: string;
-}
-
-interface ApiResponse<T> {
-  data: T | null;
-  error?: ApiError;
-}
 
 class ApiClient {
   private axiosInstance: AxiosInstance;

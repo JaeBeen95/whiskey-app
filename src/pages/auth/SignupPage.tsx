@@ -21,8 +21,8 @@ export default function SignupPage() {
   return (
     <AuthForm title="Create Your Account" onSubmit={handleSignup}>
       <AuthInput
-        id="email"
-        label="Email"
+        id="username"
+        label="Username"
         type="email"
         placeholder="이메일"
         icon={<EnvelopeIcon className="inline-block h-5 w-5 mr-2" />}
