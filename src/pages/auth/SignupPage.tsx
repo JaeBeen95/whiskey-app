@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
-import AuthForm from "./components/AuthForm";
-import AuthInput from "./components/AuthInput";
+import AuthForm from "@/pages/auth/components/AuthForm";
+import AuthInput from "@/pages/auth/components/AuthInput";
+import Button from "@/components/Button";
 import {
   EnvelopeIcon,
   LockClosedIcon,
@@ -41,13 +42,9 @@ export default function SignupPage() {
         icon={<LockClosedIcon className="inline-block h-5 w-5 mr-2" />}
       />
       <div className="mb-6">
-        <button
-          type="submit"
-          className="w-full bg-gold-500 text-deep-navy-900 font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline shadow-lg flex items-center justify-center cursor-pointer transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:shadow-xl"
-        >
-          <UserPlusIcon className="h-5 w-5 mr-2" />
+        <Button type="submit" variant="primary" icon={<UserPlusIcon className="h-5 w-5" />}>
           계정 생성
-        </button>
+        </Button>
       </div>
       <div className="flex justify-center items-center gap-x-1 border-t border-gold-500/20 pt-6 mt-6">
         <span className="text-sm text-light-gray-50/80">이미 계정이 있으신가요?</span>

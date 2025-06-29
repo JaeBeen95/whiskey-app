@@ -1,12 +1,13 @@
 import { useNavigate, Link } from "react-router-dom";
+import AuthForm from "@/pages/auth/components/AuthForm";
+import AuthInput from "@/pages/auth/components/AuthInput";
+import Button from "@/components/Button";
 import {
   UserIcon,
   LockClosedIcon,
   ArrowRightEndOnRectangleIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
-import AuthForm from "./components/AuthForm";
-import AuthInput from "./components/AuthInput";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function LoginPage() {
   };
 
   return (
-    <AuthForm title="Whiskey Vault Login" onSubmit={handleLogin}>
+    <AuthForm title="Whiskey App Login" onSubmit={handleLogin}>
       <AuthInput
         id="username"
         label="Username or Email"
@@ -35,13 +36,13 @@ export default function LoginPage() {
         icon={<LockClosedIcon className="inline-block h-5 w-5 mr-2" />}
       />
       <div className="mb-6">
-        <button
+        <Button
           type="submit"
-          className="w-full bg-gold-500 text-deep-navy-900 font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline shadow-lg flex items-center justify-center cursor-pointer transition-all duration-300 transform hover:scale-105 hover:brightness-110 hover:shadow-xl"
+          variant="primary"
+          icon={<ArrowRightEndOnRectangleIcon className="h-5 w-5" />}
         >
-          <ArrowRightEndOnRectangleIcon className="h-5 w-5 mr-2" />
           로그인
-        </button>
+        </Button>
       </div>
       <div className="flex justify-center items-center gap-x-1 border-t border-gold-500/20 pt-6 mt-6">
         <span className="text-sm text-light-gray-50/80">회원이 아니신가요?</span>
