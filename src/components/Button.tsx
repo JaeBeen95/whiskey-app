@@ -18,7 +18,7 @@ export default function Button({
   icon,
 }: ButtonProps) {
   const baseStyle =
-    "w-full font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline shadow-lg flex items-center justify-center cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-xl";
+    "w-full font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline shadow-lg flex items-center justify-center cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-xl will-change-transform backface-visibility-hidden";
 
   const getVariantStyle = (variant: ButtonVariant) => {
     switch (variant) {
