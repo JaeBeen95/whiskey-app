@@ -1,17 +1,7 @@
 import { whiskeyAppApiClient } from "@/api/client";
+import type { AuthRequest, LoginResponse, SignupResponse } from "@/pages/auth/types";
 import { WHISKEY_API_PATH } from "@/pages/constants";
 import type { ApiResponse } from "@/types";
-
-interface AuthRequest {
-  username: string;
-  password: string;
-}
-
-interface LoginResponse {
-  accessToken: string;
-}
-
-type SignupResponse = boolean;
 
 export const login = (credentials: AuthRequest): Promise<ApiResponse<LoginResponse>> => {
   return whiskeyAppApiClient.post<LoginResponse, AuthRequest>(
