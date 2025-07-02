@@ -5,6 +5,6 @@ export interface ApiError extends Error {
 }
 
 export interface ApiResponse<T> {
-  data: T | null;
+  data: T | undefined;
   error?: ApiError;
 }

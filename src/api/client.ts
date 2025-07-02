@@ -1,4 +1,4 @@
-import type { ApiError, ApiResponse } from "@/types";
+import type { ApiError, ApiResponse } from "@/types/api";
 import axios, { type AxiosInstance, type AxiosResponse, type AxiosError } from "axios";
 
 class ApiClient {
@@ -57,7 +57,7 @@ class ApiClient {
     } catch (axiosError) {
       const apiError = this.createApiError(axiosError as AxiosError);
       return {
-        data: null,
+        data: undefined,
         error: apiError,
       };
     }
