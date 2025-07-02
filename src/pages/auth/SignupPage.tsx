@@ -11,7 +11,7 @@ import {
 import { useSignupForm } from "@/pages/auth/hooks/useAuthForm";
 
 export default function SignupPage() {
-  const { handleSubmit, isLoading } = useSignupForm();
+  const { register, handleSubmit, errors, isLoading, passwordWatch } = useSignupForm();
 
   return (
     <AuthForm title="Create Your Account" onSubmit={handleSubmit}>
@@ -21,6 +21,14 @@ export default function SignupPage() {
         type="text"
         placeholder="아이디"
         icon={<EnvelopeIcon className="inline-block h-5 w-5 mr-2" />}
+        registerProps={register("username", {
+          required: "아이디는 필수입니다.",
+          minLength: {
+            value: 4,
+            message: "아이디는 최소 4자 이상이어야 합니다."
+          }
+        })}
+        error={errors.username?.message}
       />
       <AuthInput
         id="password"
@@ -29,14 +37,28 @@ export default function SignupPage() {
         placeholder="비밀번호"
         icon={<LockClosedIcon className="inline-block h-5 w-5 mr-2" />}
         autocomplete="new-password"
+        registerProps={register("password", {
+          required: "비밀번호는 필수입니다.",
+          minLength: {
+            value: 8,
+            message: "비밀번호는 최소 8자 이상이어야 합니다."
+          }
+        })}
+        error={errors.password?.message}
       />
       <AuthInput
-        id="confirm-password"
+        id="confirmPassword"
         label="Confirm Password"
         type="password"
         placeholder="비밀번호 확인"
         icon={<LockClosedIcon className="inline-block h-5 w-5 mr-2" />}
         autocomplete="new-password"
+        registerProps={register("confirmPassword", {
+          required: "비밀번호 확인은 필수입니다.",
+          validate: (value) =>
+            value === passwordWatch || "비밀번호가 일치하지 않습니다.",
+        })}
+        error={errors.confirmPassword?.message}
       />
       <div className="mb-6">
         <Button

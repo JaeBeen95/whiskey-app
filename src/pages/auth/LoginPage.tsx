@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default function LoginPage() {
-  const { handleSubmit, isLoading } = useLoginForm();
+  const { register, handleSubmit, errors, isLoading } = useLoginForm();
 
   return (
     <AuthForm title="Whiskey App Login" onSubmit={handleSubmit}>
@@ -21,6 +21,11 @@ export default function LoginPage() {
         type="text"
         placeholder="사용자 아이디"
         icon={<UserIcon className="inline-block h-5 w-5 mr-2" />}
+        autocomplete="username"
+        registerProps={register("username", {
+          required: "아이디는 필수입니다.",
+        })}
+        error={errors.username?.message}
       />
       <AuthInput
         id="password"
@@ -28,6 +33,11 @@ export default function LoginPage() {
         type="password"
         placeholder="비밀번호"
         icon={<LockClosedIcon className="inline-block h-5 w-5 mr-2" />}
+        autocomplete="current-password"
+        registerProps={register("password", {
+          required: "비밀번호는 필수입니다.",
+        })}
+        error={errors.password?.message}
       />
       <div className="mb-6">
         <Button

@@ -8,3 +8,14 @@ export interface LoginResponse {
 }
 
 export type SignupResponse = boolean;
+
+export interface SignupFormValues {
+  username: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface LoginFormValues {
+  username: string;
+  password: string;
+}
