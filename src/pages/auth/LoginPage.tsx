@@ -11,7 +11,7 @@ import {
 import FormField from "@/components/FormField";
 
 export default function LoginPage() {
-  const { register, handleSubmit, errors, isLoading } = useLoginForm();
+  const { register, handleSubmit, errors, isValid, isLoading } = useLoginForm();
 
   return (
     <Form title="Whiskey App Login" onSubmit={handleSubmit}>
@@ -46,7 +46,7 @@ export default function LoginPage() {
           type="submit"
           variant="primary"
           icon={<ArrowRightEndOnRectangleIcon className="h-5 w-5" />}
-          disabled={isLoading}
+          disabled={isLoading || !isValid}
         >
           로그인
         </Button>

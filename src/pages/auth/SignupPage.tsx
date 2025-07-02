@@ -11,7 +11,7 @@ import { useSignupForm } from "@/pages/auth/hooks/useAuthForm";
 import PasswordField from "@/pages/auth/components/PasswordField";
 
 export default function SignupPage() {
-  const { register, handleSubmit, errors, isLoading, passwordWatch } = useSignupForm();
+  const { register, handleSubmit, errors, isValid, isLoading, passwordWatch } = useSignupForm();
 
   return (
     <Form title="Create Your Account" onSubmit={handleSubmit}>
@@ -66,7 +66,7 @@ export default function SignupPage() {
           type="submit"
           variant="primary"
           icon={<UserPlusIcon className="h-5 w-5" />}
-          disabled={isLoading}
+          disabled={isLoading || !isValid}
         >
           회원가입
         </Button>

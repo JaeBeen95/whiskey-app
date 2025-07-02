@@ -3,12 +3,12 @@ import { useLoginMutation, useSignupMutation } from "@/pages/auth/hooks/useAuthM
 import type { LoginFormValues, SignupFormValues } from "@/pages/auth/types";
 
 export const useSignupForm = () => {
-  const { mutate: signupMutate, isLoading: isSignupLoading } = useSignupMutation();
+  const { mutate: signupMutate, isLoading } = useSignupMutation();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
   } = useForm<SignupFormValues>({
     mode: "all",
@@ -24,18 +24,19 @@ export const useSignupForm = () => {
     register,
     handleSubmit: handleSubmit(onSubmit),
     errors,
-    isLoading: isSignupLoading,
+    isValid,
+    isLoading,
     passwordWatch: password,
   };
 };
 
 export const useLoginForm = () => {
-  const { mutate: loginMutate, isLoading: isLoginLoading } = useLoginMutation();
+  const { mutate: loginMutate, isLoading } = useLoginMutation();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<LoginFormValues>({
     mode: "onBlur",
   });
@@ -48,6 +49,7 @@ export const useLoginForm = () => {
     register,
     handleSubmit: handleSubmit(onSubmit),
     errors,
-    isLoading: isLoginLoading,
+    isValid,
+    isLoading,
   };
 };
