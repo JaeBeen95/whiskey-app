@@ -9,6 +9,7 @@ import {
   ArrowRightEndOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import { useSignupForm } from "@/pages/auth/hooks/useAuthForm";
+import PasswordField from "@/pages/auth/components/PasswordField";
 
 export default function SignupPage() {
   const { register, handleSubmit, errors, isLoading, passwordWatch } = useSignupForm();
@@ -32,15 +33,13 @@ export default function SignupPage() {
           }),
         }}
       />
-      <FormField
+      <PasswordField
         id="password"
         label="Password"
-        icon={<LockClosedIcon className="h-5 w-5" />}
         error={errors.password?.message}
         inputProps={{
           type: "password",
           placeholder: "비밀번호",
-          autoComplete: "new-password",
           ...register("password", {
             required: "비밀번호는 필수입니다.",
             minLength: {
@@ -50,15 +49,13 @@ export default function SignupPage() {
           }),
         }}
       />
-      <FormField
+      <PasswordField
         id="confirmPassword"
         label="Confirm Password"
-        icon={<LockClosedIcon className="h-5 w-5" />}
         error={errors.confirmPassword?.message}
         inputProps={{
           type: "password",
           placeholder: "비밀번호 확인",
-          autoComplete: "new-password",
           ...register("confirmPassword", {
             required: "비밀번호 확인은 필수입니다.",
             validate: (value) => value === passwordWatch || "비밀번호가 일치하지 않습니다.",
