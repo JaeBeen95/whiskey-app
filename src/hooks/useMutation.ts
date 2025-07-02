@@ -1,12 +1,10 @@
 import { useCallback } from "react";
 import { useAsyncState } from "@/hooks/useAsyncState";
-import type { ApiResponse } from "@/types/api";
 import type { UseMutationOptions, UseMutationResult } from "@/types/query";
 
-export function useMutation<T, U>(
-  mutationFn: (variables: U) => Promise<ApiResponse<T>>,
-  options?: UseMutationOptions<T>
-): UseMutationResult<T, U> {
+export function useMutation<T, U>(options: UseMutationOptions<T, U>): UseMutationResult<T, U> {
+  const { mutationFn, onSuccess, onError } = options;
+
   const { data, setData, setStatus, setError, isLoading, isSuccess, isError, status, error } =
     useAsyncState<T>();
 
@@ -37,7 +35,7 @@ export function useMutation<T, U>(
         setStatus("success");
 
         if (responseData !== undefined) {
-          options?.onSuccess?.(responseData);
+          onSuccess?.(responseData);
           callbacks?.onSuccess?.(responseData);
         }
 
@@ -48,13 +46,13 @@ export function useMutation<T, U>(
         setError(caughtError);
         setStatus("error");
 
-        options?.onError?.(caughtError);
+        onError?.(caughtError);
         callbacks?.onError?.(caughtError);
       } finally {
         callbacks?.onSettled?.(responseData, caughtError);
       }
     },
-    [mutationFn, options, setData, setStatus, setError]
+    [mutationFn, onSuccess, onError, setData, setStatus, setError]
   );
 
   return { mutate, data, status, error, isLoading, isSuccess, isError };

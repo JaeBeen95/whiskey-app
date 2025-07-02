@@ -40,7 +40,8 @@ export interface UseQueryResult<TData = unknown> {
   error: Error | null;
 }
 
-export interface UseMutationOptions<T> {
+export interface UseMutationOptions<T, U> {
+  mutationFn: (variables: U) => Promise<ApiResponse<T>>;
   onSuccess?: (data: T) => void;
   onError?: (error: Error) => void;
 }

@@ -1,7 +1,7 @@
 interface AuthFormProps {
   title: string;
   children: React.ReactNode;
-  onSubmit: (e: React.FormEvent) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 export default function AuthForm({ title, children, onSubmit }: AuthFormProps) {
