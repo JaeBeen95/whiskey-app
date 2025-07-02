@@ -4,7 +4,6 @@ import Button from "@/components/Button";
 import FormField from "@/components/FormField";
 import {
   EnvelopeIcon,
-  LockClosedIcon,
   UserPlusIcon,
   ArrowRightEndOnRectangleIcon,
 } from "@heroicons/react/24/outline";
