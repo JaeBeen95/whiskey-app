@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLoginForm } from "@/pages/auth/hooks/useAuthForm";
-import AuthForm from "@/pages/auth/components/AuthForm";
-import AuthInput from "@/pages/auth/components/AuthInput";
+import Form from "@/components/Form";
 import Button from "@/components/Button";
 import {
   UserIcon,
@@ -9,35 +8,38 @@ import {
   ArrowRightEndOnRectangleIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
+import FormField from "@/components/FormField";
 
 export default function LoginPage() {
   const { register, handleSubmit, errors, isLoading } = useLoginForm();
 
   return (
-    <AuthForm title="Whiskey App Login" onSubmit={handleSubmit}>
-      <AuthInput
+    <Form title="Whiskey App Login" onSubmit={handleSubmit}>
+      <FormField
         id="username"
         label="Username"
-        type="text"
-        placeholder="사용자 아이디"
         icon={<UserIcon className="inline-block h-5 w-5 mr-2" />}
-        autocomplete="username"
-        registerProps={register("username", {
-          required: "아이디는 필수입니다.",
-        })}
         error={errors.username?.message}
+        inputProps={{
+          type: "text",
+          placeholder: "사용자 아이디",
+          ...register("username", {
+            required: "아이디는 필수입니다.",
+          }),
+        }}
       />
-      <AuthInput
+      <FormField
         id="password"
         label="Password"
-        type="password"
-        placeholder="비밀번호"
         icon={<LockClosedIcon className="inline-block h-5 w-5 mr-2" />}
-        autocomplete="current-password"
-        registerProps={register("password", {
-          required: "비밀번호는 필수입니다.",
-        })}
         error={errors.password?.message}
+        inputProps={{
+          type: "password",
+          placeholder: "비밀번호",
+          ...register("password", {
+            required: "비밀번호는 필수입니다.",
+          }),
+        }}
       />
       <div className="mb-6">
         <Button
@@ -59,6 +61,6 @@ export default function LoginPage() {
           회원가입
         </Link>
       </div>
-    </AuthForm>
+    </Form>
   );
 }

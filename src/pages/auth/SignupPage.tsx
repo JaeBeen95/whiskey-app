@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import AuthForm from "@/pages/auth/components/AuthForm";
-import AuthInput from "@/pages/auth/components/AuthInput";
+import Form from "@/components/Form";
 import Button from "@/components/Button";
+import FormField from "@/components/FormField";
 import {
   EnvelopeIcon,
   LockClosedIcon,
@@ -14,51 +14,56 @@ export default function SignupPage() {
   const { register, handleSubmit, errors, isLoading, passwordWatch } = useSignupForm();
 
   return (
-    <AuthForm title="Create Your Account" onSubmit={handleSubmit}>
-      <AuthInput
+    <Form title="Create Your Account" onSubmit={handleSubmit}>
+      <FormField
         id="username"
         label="Username"
-        type="text"
-        placeholder="아이디"
-        icon={<EnvelopeIcon className="inline-block h-5 w-5 mr-2" />}
-        registerProps={register("username", {
-          required: "아이디는 필수입니다.",
-          minLength: {
-            value: 4,
-            message: "아이디는 최소 4자 이상이어야 합니다."
-          }
-        })}
+        icon={<EnvelopeIcon className="h-5 w-5" />}
         error={errors.username?.message}
+        inputProps={{
+          type: "text",
+          placeholder: "아이디",
+          ...register("username", {
+            required: "아이디는 필수입니다.",
+            minLength: {
+              value: 3,
+              message: "아이디는 최소 3자 이상이어야 합니다.",
+            },
+          }),
+        }}
       />
-      <AuthInput
+      <FormField
         id="password"
         label="Password"
-        type="password"
-        placeholder="비밀번호"
-        icon={<LockClosedIcon className="inline-block h-5 w-5 mr-2" />}
-        autocomplete="new-password"
-        registerProps={register("password", {
-          required: "비밀번호는 필수입니다.",
-          minLength: {
-            value: 8,
-            message: "비밀번호는 최소 8자 이상이어야 합니다."
-          }
-        })}
+        icon={<LockClosedIcon className="h-5 w-5" />}
         error={errors.password?.message}
+        inputProps={{
+          type: "password",
+          placeholder: "비밀번호",
+          autoComplete: "new-password",
+          ...register("password", {
+            required: "비밀번호는 필수입니다.",
+            minLength: {
+              value: 8,
+              message: "비밀번호는 최소 8자 이상이어야 합니다.",
+            },
+          }),
+        }}
       />
-      <AuthInput
+      <FormField
         id="confirmPassword"
         label="Confirm Password"
-        type="password"
-        placeholder="비밀번호 확인"
-        icon={<LockClosedIcon className="inline-block h-5 w-5 mr-2" />}
-        autocomplete="new-password"
-        registerProps={register("confirmPassword", {
-          required: "비밀번호 확인은 필수입니다.",
-          validate: (value) =>
-            value === passwordWatch || "비밀번호가 일치하지 않습니다.",
-        })}
+        icon={<LockClosedIcon className="h-5 w-5" />}
         error={errors.confirmPassword?.message}
+        inputProps={{
+          type: "password",
+          placeholder: "비밀번호 확인",
+          autoComplete: "new-password",
+          ...register("confirmPassword", {
+            required: "비밀번호 확인은 필수입니다.",
+            validate: (value) => value === passwordWatch || "비밀번호가 일치하지 않습니다.",
+          }),
+        }}
       />
       <div className="mb-6">
         <Button
@@ -80,6 +85,6 @@ export default function SignupPage() {
           로그인
         </Link>
       </div>
-    </AuthForm>
+    </Form>
   );
 }
