@@ -7,6 +7,7 @@ interface ButtonProps {
   variant?: ButtonVariant;
   className?: string;
   icon?: React.ReactNode;
+  disabled?: boolean;
 }
 
 export default function Button({
@@ -16,6 +17,7 @@ export default function Button({
   variant = "primary",
   className = "",
   icon,
+  disabled = false,
 }: ButtonProps) {
   const baseStyle =
     "w-full font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline shadow-lg flex items-center justify-center cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-xl will-change-transform backface-visibility-hidden";
@@ -36,7 +38,12 @@ export default function Button({
   const variantStyle = getVariantStyle(variant);
 
   return (
-    <button type={type} onClick={onClick} className={`${baseStyle} ${variantStyle} ${className}`}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={`${baseStyle} ${variantStyle} ${className}`}
+      disabled={disabled}
+    >
       {icon && <span className="mr-2">{icon}</span>}
       {children}
     </button>

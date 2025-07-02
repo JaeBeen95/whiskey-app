@@ -1,7 +1,4 @@
-import { useNavigate, Link } from "react-router-dom";
-import { useQueryClient } from "@/context/QueryClientProvider";
-import { useMutation } from "@/hooks/useMutation";
-import { signup } from "@/pages/auth/api";
+import { Link } from "react-router-dom";
 import AuthForm from "@/pages/auth/components/AuthForm";
 import AuthInput from "@/pages/auth/components/AuthInput";
 import Button from "@/components/Button";
@@ -11,50 +8,13 @@ import {
   UserPlusIcon,
   ArrowRightEndOnRectangleIcon,
 } from "@heroicons/react/24/outline";
+import { useSignupForm } from "@/pages/auth/hooks/useAuthForm";
 
 export default function SignupPage() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation({
-    mutationFn: signup,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["me"]);
-      alert("회원가입 성공");
-      navigate("/login");
-    },
-    onError: (err) => {
-      alert(`회원가입 실패: ${err.message}`);
-    },
-  });
-
-  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const form = e.currentTarget;
-    const usernameInput = form.elements.namedItem("username") as HTMLInputElement;
-    const passwordInput = form.elements.namedItem("password") as HTMLInputElement;
-    const confirmPasswordInput = form.elements.namedItem("confirm-password") as HTMLInputElement;
-
-    const username = usernameInput?.value || "";
-    const password = passwordInput?.value || "";
-    const confirmPassword = confirmPasswordInput?.value || "";
-
-    if (password !== confirmPassword) {
-      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-      return;
-    }
-
-    if (password.length < 6) {
-      alert("비밀번호는 6자 이상이어야 합니다.");
-      return;
-    }
-
-    if (isLoading) return;
-    await mutate({ username, password });
-  };
+  const { handleSubmit, isLoading } = useSignupForm();
 
   return (
-    <AuthForm title="Create Your Account" onSubmit={handleSignup}>
+    <AuthForm title="Create Your Account" onSubmit={handleSubmit}>
       <AuthInput
         id="username"
         label="Username"
@@ -79,8 +39,13 @@ export default function SignupPage() {
         autocomplete="new-password"
       />
       <div className="mb-6">
-        <Button type="submit" variant="primary" icon={<UserPlusIcon className="h-5 w-5" />}>
-          계정 생성
+        <Button
+          type="submit"
+          variant="primary"
+          icon={<UserPlusIcon className="h-5 w-5" />}
+          disabled={isLoading}
+        >
+          회원가입
         </Button>
       </div>
       <div className="flex justify-center items-center gap-x-1 border-t border-gold-500/20 pt-6 mt-6">

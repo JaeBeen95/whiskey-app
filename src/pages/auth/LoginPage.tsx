@@ -1,7 +1,5 @@
-import { useNavigate, Link } from "react-router-dom";
-import { useQueryClient } from "@/context/QueryClientProvider";
-import { useMutation } from "@/hooks/useMutation";
-import { login } from "@/pages/auth/api";
+import { Link } from "react-router-dom";
+import { useLoginForm } from "@/pages/auth/hooks/useAuthForm";
 import AuthForm from "@/pages/auth/components/AuthForm";
 import AuthInput from "@/pages/auth/components/AuthInput";
 import Button from "@/components/Button";
@@ -13,35 +11,10 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default function LoginPage() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  const { mutate, isLoading } = useMutation({
-    mutationFn: login,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["me"]);
-      navigate("/dashboard");
-    },
-    onError: (err) => {
-      alert(`로그인 실패: ${err.message}`);
-    },
-  });
-
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const usernameInput = form.elements.namedItem("username") as HTMLInputElement;
-    const passwordInput = form.elements.namedItem("password") as HTMLInputElement;
-
-    const username = usernameInput?.value || "";
-    const password = passwordInput?.value || "";
-
-    if (isLoading) return;
-    mutate({ username, password });
-  };
+  const { handleSubmit, isLoading } = useLoginForm();
 
   return (
-    <AuthForm title="Whiskey App Login" onSubmit={handleLogin}>
+    <AuthForm title="Whiskey App Login" onSubmit={handleSubmit}>
       <AuthInput
         id="username"
         label="Username"
@@ -61,6 +34,7 @@ export default function LoginPage() {
           type="submit"
           variant="primary"
           icon={<ArrowRightEndOnRectangleIcon className="h-5 w-5" />}
+          disabled={isLoading}
         >
           로그인
         </Button>
