@@ -11,7 +11,7 @@ export const useSignupForm = () => {
     formState: { errors },
     watch,
   } = useForm<SignupFormValues>({
-    mode: "onChange",
+    mode: "all",
   });
 
   const password = watch("password", "");
