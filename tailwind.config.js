@@ -4,27 +4,32 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        serif: ["Times New Roman", "Georgia", "serif"],
+        serif: ["Georgia", "Times New Roman", "serif"],
         sans: ["Inter", "Roboto", "sans-serif"],
       },
       colors: {
-        amber: {
-          500: "#D4A574",
-          700: "#B8860B",
-          600: "#B8860B",
+        "deep-navy": {
+          800: "#2C3E50", 
+          900: "#1A2332", 
         },
-        "deep-brown": {
-          700: "#8B4513",
-          900: "#654321",
+        gold: {
+          500: "#FFD700",
+          600: "#DAA520", 
         },
-        cream: {
-          50: "#FFF8DC",
-          100: "#F5F5DC",
+        "dark-gray": {
+          700: "#2F3640", 
         },
-        copper: "#B87333",
+        "light-gray": {
+          50: "#F8F9FA", 
+        },
+        "accent-orange": {
+          500: "#FF6B35", 
+        },
       },
       boxShadow: {
-        soft: "0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)",
+        'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        'glow-gold': '0 0 15px rgba(255, 215, 0, 0.3)', 
       },
       borderRadius: {
         lg: "0.75rem",
