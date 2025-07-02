@@ -7,15 +7,10 @@ export interface LoginResponse {
   accessToken: string;
 }
 
-export type SignupResponse = boolean;
+export type SignupResponse = boolean; 
 
-export interface SignupFormValues {
-  username: string;
-  password: string;
+export interface SignupFormValues extends AuthRequest {
   confirmPassword: string;
 }
 
-export interface LoginFormValues {
-  username: string;
-  password: string;
-}
+export type LoginFormValues = AuthRequest;
