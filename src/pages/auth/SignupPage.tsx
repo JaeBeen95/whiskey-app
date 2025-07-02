@@ -1,4 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
+import { useQueryClient } from "@/context/QueryClientProvider";
+import { useMutation } from "@/hooks/useMutation";
+import { signup } from "@/pages/auth/api";
 import AuthForm from "@/pages/auth/components/AuthForm";
 import AuthInput from "@/pages/auth/components/AuthInput";
 import Button from "@/components/Button";
@@ -8,9 +11,6 @@ import {
   UserPlusIcon,
   ArrowRightEndOnRectangleIcon,
 } from "@heroicons/react/24/outline";
-import { useMutation } from "@/hooks/useMutation";
-import { signup } from "@/pages/auth/api";
-import { useQueryClient } from "@/context/QueryClientProvider";
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -38,8 +38,6 @@ export default function SignupPage() {
     const username = usernameInput?.value || "";
     const password = passwordInput?.value || "";
     const confirmPassword = confirmPasswordInput?.value || "";
-    console.log("비밀번호", password);
-    console.log("비밀번호 확인", confirmPassword);
 
     if (password !== confirmPassword) {
       alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");

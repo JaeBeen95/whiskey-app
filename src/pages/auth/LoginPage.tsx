@@ -1,4 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
+import { useQueryClient } from "@/context/QueryClientProvider";
+import { useMutation } from "@/hooks/useMutation";
+import { login } from "@/pages/auth/api";
 import AuthForm from "@/pages/auth/components/AuthForm";
 import AuthInput from "@/pages/auth/components/AuthInput";
 import Button from "@/components/Button";
@@ -11,12 +14,30 @@ import {
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const { mutate, isLoading } = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["me"]);
+      navigate("/dashboard");
+    },
+    onError: (err) => {
+      alert(`로그인 실패: ${err.message}`);
+    },
+  });
+
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    const usernameInput = form.elements.namedItem("username") as HTMLInputElement;
+    const passwordInput = form.elements.namedItem("password") as HTMLInputElement;
 
-    console.log("로그인 시도");
-    navigate("/dashboard");
+    const username = usernameInput?.value || "";
+    const password = passwordInput?.value || "";
+
+    if (isLoading) return;
+    mutate({ username, password });
   };
 
   return (
