@@ -13,7 +13,11 @@ export default function CaskListPage() {
             >
               <h3 className="text-xl font-serif text-deep-brown mb-2">캐스크 이름 {id}</h3>
               <p className="text-sm text-deep-brown/80 mb-1">번호: CASK-{1000 + id}</p>
-              <p className="text-sm text-deep-brown/80 mb-4">증류소: 시크릿 아일라</p>
+              <p className="text-sm text-deep-brown/80 mb-1">증류소: 시크릿 아일라</p>
+              <p className="text-sm text-deep-brown/80 mb-1">크기: Standard Barrel</p>
+              <p className="text-sm text-deep-brown/80 mb-1">나무: American Oak</p>
+              <p className="text-sm text-deep-brown/80 mb-1">충전: Sherry Cask</p>
+              <p className="text-sm text-deep-brown/80 mb-4">구매가: £ 10,000</p>
               <Link
                 to={`/casks/${id}`}
                 className="inline-flex items-center text-amber hover:text-copper font-bold"

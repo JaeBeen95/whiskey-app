@@ -12,15 +12,31 @@ export default function CaskDetailPage() {
             <h3 className="font-bold text-lg mb-2">기본 정보</h3>
             <p>이름: 고씨네캐스크</p>
             <p>번호: 234523424A</p>
-            <p>증류소: 시크릿 아일라 (쿨일라)</p>
+            <p>증류소 (실제): 쿨일라</p>
+            <p>증류소 (표시): 시크릿 아일라</p>
             <p>창고: Warehouse A</p>
+            <p>코멘트: 이 캐스크는 특별히 관리됩니다.</p>
           </div>
           <div className="p-4 bg-white rounded-md shadow-sm border border-amber/10">
             <h3 className="font-bold text-lg mb-2">물리적 특성</h3>
             <p>ABV: 60%</p>
-            <p>용량: 200L</p>
+            <p>벌크 리터: 200L</p>
+            <p>용량 리터: 200L</p>
+            <p>LPA: 120L</p>
+            <p>OLA/RLA: OLA</p>
+            <p>캐스크 크기: Standard Barrel</p>
             <p>나무 종류: American Oak</p>
-            <p>숙성: Sherry</p>
+            <p>시즈닝: Sherry</p>
+            <p>충전 유형: Sherry Butt</p>
+            <p>몰트 타입: Single Malt</p>
+          </div>
+          <div className="md:col-span-2 p-4 bg-white rounded-md shadow-sm border border-amber/10">
+            <h3 className="font-bold text-lg mb-2">재무 정보</h3>
+            <p>구매 가격: £ 10,000</p>
+            <p>캐스크 통화: GBP</p>
+            <p>예상 도착 가격: £ 12,000</p>
+            <p>병당 가격: £ 50</p>
+            <p>LPA당 가격: £ 83.33</p>
           </div>
           <div className="md:col-span-2 p-4 bg-white rounded-md shadow-sm border border-amber/10">
             <h3 className="font-bold text-lg mb-2">이벤트 이력</h3>
