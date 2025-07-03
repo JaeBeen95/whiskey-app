@@ -10,6 +10,8 @@ class ApiClient {
       baseURL,
     });
 
+    this.accessToken = sessionStorage.getItem("accessToken");
+
     this.axiosInstance.interceptors.request.use(
       (config) => {
         if (this.accessToken) {

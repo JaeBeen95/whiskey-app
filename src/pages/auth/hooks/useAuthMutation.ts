@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@/context/QueryClientProvider";
 import { useMutation } from "@/hooks/useMutation";
 import { login, signup } from "@/pages/auth/api";
+import { whiskeyAppApiClient } from "@/api/client";
 
 export const useSignupMutation = () => {
   const navigate = useNavigate();
@@ -26,7 +27,12 @@ export const useLoginMutation = () => {
 
   return useMutation({
     mutationFn: login,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      if (data && data.accessToken) {
+        whiskeyAppApiClient.setAccessToken(data.accessToken);
+
+        sessionStorage.setItem("accessToken", data.accessToken);
+      }
       queryClient.invalidateQueries(["me"]);
       navigate("/dashboard");
     },
