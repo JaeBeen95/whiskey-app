@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { whiskeyAppApiClient } from "@/api/client";
 
-export function useAuthStatus() {
+export const useAuthStatus = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!sessionStorage.getItem("accessToken"));
 
   const setAuthToken = useCallback((token: string | null) => {
@@ -21,4 +21,4 @@ export function useAuthStatus() {
   }, [setAuthToken]);
 
   return { isLoggedIn, setAuthToken, logout };
-}
+};

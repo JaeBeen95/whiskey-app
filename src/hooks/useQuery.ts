@@ -3,7 +3,7 @@ import { useQueryClient } from "@/context/QueryClientProvider";
 import { useAsyncState } from "@/hooks/useAsyncState";
 import type { UseQueryOptions, UseQueryResult } from "@/types/query";
 
-export function useQuery<T>(options: UseQueryOptions<T>): UseQueryResult<T> {
+export const useQuery = <T>(options: UseQueryOptions<T>): UseQueryResult<T> => {
   const { queryKey, queryFn, enabled = true, staleTime, gcTime } = options;
 
   const queryClient = useQueryClient();
@@ -102,4 +102,4 @@ export function useQuery<T>(options: UseQueryOptions<T>): UseQueryResult<T> {
   }, [fetchData, setStatus]);
 
   return { data, refetch, isStale, isLoading, isSuccess, isError, status, error };
-}
+};

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { NAV_LINKS, type NavLinks } from "@/constants/navLinks";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
 
-export function useFilteredNavLinks(): NavLinks[] {
+export const useFilteredNavLinks = (): NavLinks[] => {
   const { isLoggedIn } = useAuthStatus();
 
   const filteredNavLinks = useMemo(() => {
@@ -15,4 +15,4 @@ export function useFilteredNavLinks(): NavLinks[] {
   }, [isLoggedIn]);
 
   return filteredNavLinks;
-}
+};

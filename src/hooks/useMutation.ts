@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useAsyncState } from "@/hooks/useAsyncState";
 import type { UseMutationOptions, UseMutationResult } from "@/types/query";
 
-export function useMutation<T, U>(options: UseMutationOptions<T, U>): UseMutationResult<T, U> {
+export const useMutation = <T, U>(options: UseMutationOptions<T, U>): UseMutationResult<T, U> => {
   const { mutationFn, onSuccess, onError } = options;
 
   const { data, setData, setStatus, setError, isLoading, isSuccess, isError, status, error } =
@@ -56,4 +56,4 @@ export function useMutation<T, U>(options: UseMutationOptions<T, U>): UseMutatio
   );
 
   return { mutate, data, status, error, isLoading, isSuccess, isError };
-}
+};

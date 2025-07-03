@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import type { AsyncStatus } from "@/types/query";
 
-export function useAsyncState<T>() {
+export const useAsyncState = <T>() => {
   const [data, setData] = useState<T | undefined>(undefined);
   const [status, setStatus] = useState<AsyncStatus>("idle");
   const [error, setError] = useState<Error | null>(null);
@@ -24,4 +24,4 @@ export function useAsyncState<T>() {
     setError,
     ...computedStates,
   };
-}
+};
