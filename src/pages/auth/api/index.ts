@@ -1,5 +1,5 @@
 import { whiskeyAppApiClient } from "@/api/client";
-import { WHISKEY_API_PATH } from "@/pages/constants";
+import { WHISKEY_API_PATH } from "@/constants/apiPath";
 import type { AuthRequest, LoginResponse, SignupResponse } from "@/pages/auth/types";
 import type { ApiResponse } from "@/types/api";
 
