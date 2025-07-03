@@ -7,47 +7,54 @@ import {
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
 
-export const navLinks = [
+export interface NavLinks {
+  to: string;
+  icon: React.ReactNode;
+  text: string;
+  loggedIn?: boolean;
+}
+
+export const NAV_LINKS = [
   {
     to: "/dashboard",
     icon: <Squares2X2Icon className="h-6 w-6" />,
     text: "대시보드",
-    authRequirement: "loggedIn",
+    loggedIn: true,
   },
   {
     to: "/casks",
     icon: <CubeIcon className="h-6 w-6" />,
     text: "캐스크 목록",
-    authRequirement: "loggedIn",
+    loggedIn: true,
   },
   {
     to: "/containers",
     icon: <CubeIcon className="h-6 w-6" />,
     text: "컨테이너 목록",
-    authRequirement: "loggedIn",
+    loggedIn: true,
   },
   {
     to: "/spirits",
     icon: <SparklesIcon className="h-6 w-6" />,
     text: "스피릿 목록",
-    authRequirement: "loggedIn",
+    loggedIn: true,
   },
   {
     to: "/profile",
     icon: <UserIcon className="h-6 w-6" />,
     text: "내 정보",
-    authRequirement: "loggedIn",
+    loggedIn: true,
   },
   {
     to: "/login",
     icon: <ArrowRightEndOnRectangleIcon className="h-6 w-6" />,
     text: "로그인",
-    authRequirement: "loggedOut",
+    loggedIn: false,
   },
   {
     to: "/signup",
     icon: <UserPlusIcon className="h-6 w-6" />,
     text: "회원가입",
-    authRequirement: "loggedOut",
+    loggedIn: false,
   },
-];
+] as const;

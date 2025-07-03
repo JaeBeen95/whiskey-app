@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import NavLink from "@/components/NavLink";
-import { navLinks } from "@/constants/navLinks";
+import type { NavLinks } from "@/constants/navLinks";
 
-export default function Header() {
+interface HeaderProps {
+  navLinks: NavLinks[];
+}
+
+export default function Header({ navLinks }: HeaderProps) {
   return (
     <header className="w-full bg-deep-brown py-4 px-6 flex items-center justify-between shadow-lg">
       <Link

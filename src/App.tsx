@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useFilteredNavLinks } from "@/hooks/useFilteredNavLinks";
 import { Layout } from "@/components/Layout";
 import LoginPage from "@/pages/auth/LoginPage";
 import SignupPage from "@/pages/auth/SignupPage";
@@ -12,9 +13,11 @@ import SpiritDetailPage from "@/pages/spirit/SpiritDetailPage";
 import UserPage from "@/pages/user/UserPage";
 
 function App() {
+  const filteredNavLinks = useFilteredNavLinks();
+
   return (
     <Router>
-      <Layout>
+      <Layout navLinks={filteredNavLinks}>
         <Routes>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/casks" element={<CaskListPage />} />
