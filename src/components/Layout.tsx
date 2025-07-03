@@ -1,3 +1,5 @@
+import Header from "@/components/Header";
+
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -5,6 +7,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   return (
     <div className="flex flex-col min-h-screen bg-parchment">
+      <Header />
       <main className="flex-1 overflow-auto">{children}</main>
     </div>
   );
