@@ -20,7 +20,7 @@ export default function Button({
   disabled = false,
 }: ButtonProps) {
   const baseStyle =
-    "w-full font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline shadow-lg flex items-center justify-center transition-all duration-300 transform will-change-transform backface-visibility-hidden";
+    "font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline shadow-lg flex items-center justify-center transition-all duration-300 transform will-change-transform backface-visibility-hidden";
 
   const getVariantStyle = (buttonVariant: ButtonVariant) => {
     switch (buttonVariant) {

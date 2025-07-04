@@ -13,24 +13,23 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
 
   return (
     <ModalPortal>
-      <div
-        className="fixed inset-0 flex items-center justify-center p-4 z-[1000] bg-black bg-opacity-70 backdrop-blur-md"
-        onClick={onClose}
-      >
+      <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} aria-hidden="true" />
+      <div className="fixed bg-white rounded-xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-4xl mx-4">
         <div
-          className="relative w-full max-w-lg p-8 rounded-2xl shadow-whiskey-xl border-2 border-amber-primary bg-cream-bg"
+          className="relative w-full p-8 shadow-glow-gold border border-gold-500/30 bg-parchment text-dark-gray-700"
           onClick={(e) => e.stopPropagation()}
         >
-          <h2 className="text-4xl font-serif text-deep-brown text-center mb-6 font-bold drop-shadow-md">
-            {title}
-          </h2>
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 p-2 text-copper-accent hover:text-gold-primary transition-colors duration-300 rounded-full flex items-center justify-center"
-          >
-            <XMarkIcon className="w-8 h-8" />
-          </button>
-          <div className="font-sans text-darker-brown leading-relaxed text-lg">{children}</div>
+          <div className="flex justify-between items-center pb-4 mb-6 border-b border-gold-500/20">
+            <h2 className="text-2xl font-serif text-gold-500">{title}</h2>
+            <button
+              onClick={onClose}
+              className="p-1 text-dark-gray-700/70 hover:text-gold-500 transition-colors duration-200 rounded-full"
+              aria-label="Close modal"
+            >
+              <XMarkIcon className="w-6 h-6" />
+            </button>
+          </div>
+          <div className="font-sans">{children}</div>
         </div>
       </div>
     </ModalPortal>

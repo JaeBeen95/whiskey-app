@@ -59,6 +59,7 @@ export default function SignupPage() {
         />
         <div className="mb-6">
           <Button
+            className="w-full"
             type="submit"
             variant="primary"
             icon={<UserPlusIcon className="h-5 w-5" />}

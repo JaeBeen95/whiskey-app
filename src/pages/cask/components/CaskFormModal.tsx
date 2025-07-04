@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Modal } from "@/components/modal/Modal";
 import FormField from "@/components/FormField";
 import Button from "@/components/Button";
@@ -44,7 +44,7 @@ const defaultCaskFormData: CaskFormData = {
   events: [],
 };
 
-export function CaskFormModal({
+export default function CaskFormModal({
   isOpen,
   onClose,
   mode,
@@ -61,6 +61,7 @@ export function CaskFormModal({
     mode: "onChange",
   });
 
+  //TODO: useQuery로 처리할 예정
   useEffect(() => {
     if (isOpen) {
       const dataToReset = mode === "edit" && initialData ? initialData : defaultCaskFormData;
@@ -68,18 +69,13 @@ export function CaskFormModal({
     }
   }, [isOpen, mode, initialData, reset]);
 
-  const onFormSubmit: SubmitHandler<CaskFormData> = async (data) => {
-    await onSubmit(data);
-    onClose();
-  };
-
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       title={mode === "create" ? "캐스크 등록" : "캐스크 수정"}
     >
-      <form onSubmit={handleSubmit(onFormSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 max-h-[60vh] overflow-y-auto pr-3">
           <h3 className="md:col-span-2 text-lg font-serif text-gold-500/90 mb-2 mt-2 border-b border-gold-500/20 pb-2">
             기본 정보
