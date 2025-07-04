@@ -8,7 +8,7 @@ export default function DropdownItem({ children, onClick, icon }: DropdownItemPr
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-light-gray-50 hover:bg-deep-navy-900/50"
+      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-light-gray-50 hover:bg-deep-navy-900/50 cursor-pointer"
     >
       {icon && <span className="w-5 h-5">{icon}</span>}
       {children}
