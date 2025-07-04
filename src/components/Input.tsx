@@ -6,7 +6,7 @@ export interface InputProps extends InputElementProps {
   icon?: React.ReactNode;
   endIcon?: React.ReactNode;
   hasError?: boolean;
-  inputClassName?: string;
+  className?: string;
   ref: React.Ref<HTMLInputElement>;
 }
 
@@ -14,7 +14,7 @@ export default function Input({
   icon,
   endIcon,
   hasError = false,
-  inputClassName,
+  className,
   ...props
 }: InputProps) {
   const { type = "text", ...restProps } = props;
@@ -26,7 +26,7 @@ export default function Input({
   const endIconPadding = endIcon ? "pr-10" : "pr-4";
   const errorBorderClass = hasError ? "border-red-500" : "border-gold-500/40";
 
-  const finalClassName = `${baseClasses} ${startIconPadding} ${endIconPadding} ${errorBorderClass} ${inputClassName || ""}`;
+  const inputClassName = `${baseClasses} ${startIconPadding} ${endIconPadding} ${errorBorderClass} ${className || ""}`;
 
   return (
     <div className="relative w-full">
@@ -35,7 +35,7 @@ export default function Input({
           {icon}
         </span>
       )}
-      <input type={type} className={finalClassName} {...restProps} ref={props.ref} />
+      <input type={type} className={inputClassName} {...restProps} ref={props.ref} />
       {endIcon && (
         <div className="absolute inset-y-0 right-0 flex items-center pr-3">{endIcon}</div>
       )}
