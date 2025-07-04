@@ -1,33 +1,75 @@
-import type { InputHTMLAttributes, ReactNode } from "react";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
-interface FormFieldProps {
-  id: string;
+type InputOrTextareaProps =
+  | (Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> & {
+      type?: "text" | "password" | "email" | "number" | string;
+    })
+  | (Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "type"> & { type: "textarea" });
+
+export type FormFieldInputProps = UseFormRegisterReturn &
+  InputOrTextareaProps & {
+    ref: React.Ref<HTMLInputElement | HTMLTextAreaElement>;
+  };
+
+export interface FormFieldProps {
   label: string;
-  icon?: ReactNode;
+  icon?: React.ReactNode;
+  endIcon?: React.ReactNode;
   error?: string;
-  inputProps?: InputHTMLAttributes<HTMLInputElement>;
+  inputProps: FormFieldInputProps;
+  className?: string;
 }
 
-export default function FormField({ id, label, icon, error, inputProps }: FormFieldProps) {
+export default function FormField({
+  label,
+  icon,
+  endIcon,
+  error,
+  inputProps,
+  className,
+}: FormFieldProps) {
+  const { type = "text", ...restInputProps } = inputProps;
+
+  const baseClasses =
+    "w-full bg-dark-gray-700/50 border text-light-gray-50 placeholder-light-gray-50/40 rounded-lg py-3 pr-3 focus:outline-none focus:ring-2 focus:ring-gold-500 transition-colors duration-200";
+  const iconPaddingClass = icon ? "pl-10" : "pl-4";
+  const errorBorderClass = error ? "border-red-500" : "border-gold-500/30";
+  const inputClassName = `${baseClasses} ${iconPaddingClass} ${errorBorderClass}`;
+
   return (
-    <div className="mb-3">
-      <label htmlFor={id} className="text-gold-500 text-sm font-bold mb-2 flex items-center">
-        {icon && <span className="mr-2">{icon}</span>}
+    <div className={`mb-6 ${className || ""}`}>
+      <label htmlFor={inputProps.name} className="block text-sm font-bold text-gold-500 mb-2">
         {label}
       </label>
-      <div>
-        <input
-          id={id}
-          name={id}
-          className={`shadow-inner appearance-none border rounded-lg w-full py-3 px-4 text-light-gray-50 bg-deep-navy-900 leading-tight focus:outline-none focus:ring-2 focus:ring-accent-orange-500 focus:border-transparent transition-all duration-200 placeholder-light-gray-50/50 ${
-            error ? "border-red-500" : "border-gold-500/50"
-          } ${inputProps?.className || ""}`}
-          {...inputProps}
-        />
-        <p className={`text-xs mt-1 ${error ? "text-red-500" : "text-transparent"} min-h-5`}>
-          {error || " "}
-        </p>
+      <div className="relative">
+        {icon && (
+          <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-light-gray-50/60">
+            {icon}
+          </span>
+        )}
+        {type === "textarea" ? (
+          <textarea
+            id={inputProps.name}
+            className={inputClassName}
+            rows={4}
+            {...(restInputProps as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
+            ref={inputProps.ref as React.Ref<HTMLTextAreaElement>}
+          />
+        ) : (
+          <input
+            id={inputProps.name}
+            type={type}
+            className={inputClassName}
+            {...(restInputProps as React.InputHTMLAttributes<HTMLInputElement>)}
+            ref={inputProps.ref as React.Ref<HTMLInputElement>}
+          />
+        )}
+
+        {endIcon && (
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3">{endIcon}</div>
+        )}
       </div>
+      {error && <p className="text-red-500 text-xs italic mt-2">{error}</p>}
     </div>
   );
 }
