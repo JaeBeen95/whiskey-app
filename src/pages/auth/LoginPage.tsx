@@ -9,6 +9,7 @@ import {
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import FormField from "@/components/FormField";
+import Input from "@/components/Input";
 
 export default function LoginPage() {
   //TODO: 아이디 비밀번호 자동완성 시 버튼 활성화 안됨
@@ -17,30 +18,30 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-dark-gray-700 p-4 font-sans">
       <Form title="Whiskey App Login" onSubmit={handleSubmit}>
-        <FormField
-          label="Username"
-          icon={<UserIcon className="inline-block h-5 w-5 mr-2" />}
-          error={errors.username?.message}
-          inputProps={{
-            type: "text",
-            placeholder: "사용자 아이디",
-            ...register("username", {
+        <FormField label="Username" htmlFor="username" error={errors.username?.message}>
+          <Input
+            id="username"
+            icon={<UserIcon className="h-5 w-5" />}
+            hasError={!!errors.username}
+            type="text"
+            placeholder="사용자 아이디"
+            {...register("username", {
               required: "아이디는 필수입니다.",
-            }),
-          }}
-        />
-        <FormField
-          label="Password"
-          icon={<LockClosedIcon className="inline-block h-5 w-5 mr-2" />}
-          error={errors.password?.message}
-          inputProps={{
-            type: "password",
-            placeholder: "비밀번호",
-            ...register("password", {
+            })}
+          />
+        </FormField>
+        <FormField label="Password" htmlFor="password" error={errors.password?.message}>
+          <Input
+            id="password"
+            icon={<LockClosedIcon className="h-5 w-5" />}
+            hasError={!!errors.password}
+            type="password"
+            placeholder="비밀번호"
+            {...register("password", {
               required: "비밀번호는 필수입니다.",
-            }),
-          }}
-        />
+            })}
+          />
+        </FormField>
         <div className="mb-6">
           <Button
             className="w-full"

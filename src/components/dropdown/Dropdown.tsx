@@ -18,7 +18,7 @@ export default function Dropdown({ trigger, children }: DropdownProps) {
         {trigger}
       </div>
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-deep-navy-800 rounded-md shadow-lg z-10 border border-gold-500/20 py-1">
+        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gold-500/20 py-1 max-h-40 overflow-y-auto">
           {children}
         </div>
       )}

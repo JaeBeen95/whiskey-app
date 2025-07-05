@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useSignupForm } from "@/pages/auth/hooks/useAuthForm";
 import PasswordField from "@/pages/auth/components/PasswordField";
+import Input from "@/components/Input";
 
 export default function SignupPage() {
   const { register, handleSubmit, errors, isValid, isLoading, passwordWatch } = useSignupForm();
@@ -16,22 +17,20 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-dark-gray-700 p-4 font-sans">
       <Form title="Create Your Account" onSubmit={handleSubmit}>
-        <FormField
-          label="Username"
-          icon={<EnvelopeIcon className="h-5 w-5" />}
-          error={errors.username?.message}
-          inputProps={{
-            type: "text",
-            placeholder: "아이디",
-            ...register("username", {
+        <FormField label="Username" htmlFor="username" error={errors.username?.message}>
+          <Input
+            id="username"
+            icon={<EnvelopeIcon className="h-5 w-5" />}
+            hasError={!!errors.username}
+            type="text"
+            placeholder="사용자 아이디"
+            {...register("username", {
               required: "아이디는 필수입니다.",
-              minLength: {
-                value: 3,
-                message: "아이디는 최소 3자 이상이어야 합니다.",
-              },
-            }),
-          }}
-        />
+              minLength: { value: 4, message: "아이디는 최소 4자 이상이어야 합니다." },
+            })}
+          />
+        </FormField>
+
         <PasswordField
           label="Password"
           error={errors.password?.message}

@@ -119,3 +119,5 @@ export interface CreateCaskRequest {
 }
 
 export interface UpdateCaskRequest extends Partial<CreateCaskRequest> {}
+
+export type EventType = "bottling" | "regauging" | "reracking" | "sampling" | "split" | "transfer";
