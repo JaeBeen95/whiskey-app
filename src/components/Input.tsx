@@ -20,6 +20,8 @@ export default function Input({
   const errorBorderClass = hasError ? "border-red-500" : "border-gold-500/40";
   const inputClassName = `${baseClasses} ${startIconPadding} ${endIconPadding} ${errorBorderClass} ${className || ""}`;
 
+  const { ref, ...restProps } = props;
+
   return (
     <div className="relative w-full">
       {icon && (
@@ -27,7 +29,7 @@ export default function Input({
           {icon}
         </span>
       )}
-      <input className={inputClassName} {...props} />
+      <input {...restProps} className={inputClassName} {...props} />
       {endIcon && (
         <div className="absolute inset-y-0 right-0 flex items-center pr-3">{endIcon}</div>
       )}

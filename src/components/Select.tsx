@@ -20,6 +20,8 @@ export default function Select({
   const errorBorderClass = hasError ? "border-red-500" : "border-gold-500/40";
   const selectClassName = `${baseClasses} ${startIconPadding} ${errorBorderClass} ${className || ""}`;
 
+  const { ref, ...restProps } = props;
+
   return (
     <div className="relative w-full">
       {icon && (
@@ -27,7 +29,7 @@ export default function Select({
           {icon}
         </span>
       )}
-      <select {...props} className={selectClassName}>
+      <select {...restProps} ref={ref} className={selectClassName}>
         {children}
       </select>
       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-light-gray-50">
