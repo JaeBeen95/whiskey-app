@@ -38,12 +38,6 @@ export interface CaskContent {
   malt_type: string;
 }
 
-export interface Pageable {
-  page?: number;
-  size?: number;
-  sort?: string[];
-}
-
 export interface Sort {
   empty: boolean;
   sorted: boolean;
@@ -66,8 +60,21 @@ export interface CaskSearchDto {
 }
 
 export interface GetCaskListParams {
-  pageable?: Pageable;
-  searchDto?: CaskSearchDto;
+  page: number;
+  size: number;
+  sort?: string[];
+  warehouse?: string;
+  distillery_true_name?: string;
+  order_by?: number;
+  cask_size?: string;
+  wood_type?: string;
+  cask_number?: string;
+  cask_name?: string;
+  fill_type?: string;
+  is_active?: boolean;
+  malt_type?: string;
+  distillery_display_name?: string;
+  seasoning?: string;
 }
 
 export interface CaskList {

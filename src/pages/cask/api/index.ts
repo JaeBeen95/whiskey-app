@@ -10,8 +10,8 @@ import type {
 } from "@/pages/cask/types";
 import type { ApiResponse } from "@/types/api";
 
-export const getCaskList = (params?: GetCaskListParams): Promise<CaskListResponse> => {
-  return whiskeyAppApiClient.get<CaskList>(WHISKEY_API_PATH.CASK.BASE, { params });
+export const getCaskList = (params: GetCaskListParams): Promise<CaskListResponse> => {
+  return whiskeyAppApiClient.get<CaskList, GetCaskListParams>(WHISKEY_API_PATH.CASK.BASE, params);
 };
 
 export const getCaskDetail = (caskId: number | string): Promise<ApiResponse<CaskDetail>> => {

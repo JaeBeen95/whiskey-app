@@ -65,8 +65,8 @@ class ApiClient {
     }
   }
 
-  async get<T>(endpoint: string, params?: Record<string, unknown>): Promise<ApiResponse<T>> {
-    return this.request(this.axiosInstance.get<T>(endpoint, { params }));
+  async get<T, P extends object = {}>(endpoint: string, params?: P): Promise<ApiResponse<T>> {
+    return this.request(this.axiosInstance.get<T>(endpoint, params ? { params } : {}));
   }
 
   async post<T, U = unknown>(endpoint: string, body?: U): Promise<ApiResponse<T>> {

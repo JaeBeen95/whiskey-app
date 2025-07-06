@@ -11,6 +11,8 @@ import Checkbox from "@/components/CheckBox";
 import CaskCard from "@/pages/cask/components/CaskCard";
 import { PlusIcon, MagnifyingGlassIcon, BuildingOfficeIcon } from "@heroicons/react/24/outline";
 import type { CaskContent } from "@/pages/cask/types";
+import { useQuery } from "@/hooks/useQuery";
+import { getCaskList } from "@/pages/cask/api";
 
 interface SearchFormData {
   cask_name: string;
@@ -71,6 +73,11 @@ const mockCasks: CaskContent[] = [
 ];
 
 export default function CaskListPage() {
+  const { data } = useQuery({
+    queryKey: ["cask"],
+    queryFn: () => getCaskList({ page: 1, size: 10 }),
+  });
+
   const { isOpen, openModal, closeModal } = useModal();
   const [searchParams, setSearchParams] = useState<Partial<SearchFormData>>({});
 
@@ -82,19 +89,21 @@ export default function CaskListPage() {
     closeModal();
   };
   const handleSearch: SubmitHandler<SearchFormData> = (data) => {
-    console.log("검색 조건:", data);
     setSearchParams(data);
   };
   const handleReset = () => {
     reset();
     handleSearch({
-      cask_name: "", warehouse: "", is_active: true, order_by: "cask_name,asc",
+      cask_name: "",
+      warehouse: "",
+      is_active: true,
+      order_by: "cask_name,asc",
       distillery_true_name: "",
       cask_size: "",
       wood_type: "",
       seasoning: "",
       fill_type: "",
-      malt_type: ""
+      malt_type: "",
     });
   };
 
