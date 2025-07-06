@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@/context/QueryClientProvider";
 import { useMutation } from "@/hooks/useMutation";
-import { useAuthStatus } from "@/hooks/useAuthStatus";
 import { login, signup } from "@/pages/auth/api";
 import { whiskeyAppApiClient } from "@/api/client";
+import { useAuthState } from "@/hooks/useAuthState";
 
 export const useSignupMutation = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const useSignupMutation = () => {
 export const useLoginMutation = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { setAuthToken } = useAuthStatus();
+  const { setAuthToken } = useAuthState();
 
   return useMutation({
     mutationFn: login,

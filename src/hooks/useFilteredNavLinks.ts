@@ -1,18 +1,15 @@
-import { useMemo } from "react";
 import { NAV_LINKS, type NavLinks } from "@/constants/navLinks";
-import { useAuthStatus } from "@/hooks/useAuthStatus";
+import { useAuthState } from "@/hooks/useAuthState";
 
 export const useFilteredNavLinks = (): NavLinks[] => {
-  const { isLoggedIn } = useAuthStatus();
+  const { isLoggedIn } = useAuthState();
 
-  const filteredNavLinks = useMemo(() => {
-    return NAV_LINKS.filter((link) => {
-      if (link.loggedIn === undefined) {
-        return true;
-      }
-      return link.loggedIn === isLoggedIn;
-    });
-  }, [isLoggedIn]);
+  const filteredNavLinks = NAV_LINKS.filter((link) => {
+    if (link.loggedIn === undefined) {
+      return true;
+    }
+    return link.loggedIn === isLoggedIn;
+  });
 
   return filteredNavLinks;
 };

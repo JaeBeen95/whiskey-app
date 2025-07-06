@@ -181,7 +181,7 @@ export function QueryClientProvider({
 export function useQueryClient() {
   const client = useContext(QueryClientContext);
   if (!client) {
-    throw new Error("useQueryClient은 QueryClientProvider 내부에서 사용해야 합니다");
+    throw new Error("useQueryClient는 QueryClientProvider 내부에서 사용해야 합니다");
   }
   return client;
 }
