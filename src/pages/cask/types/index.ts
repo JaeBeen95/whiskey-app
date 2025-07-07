@@ -34,6 +34,7 @@ export interface CaskDetail extends CaskContent {
   seasoning: string;
   warehouse: string;
   wood_type: string;
+  is_active: boolean;
 }
 
 export interface Sort {

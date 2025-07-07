@@ -18,8 +18,10 @@ export const getCaskList = (
   );
 };
 
-export const getCaskDetail = (caskId: number | string): Promise<ApiResponse<CaskDetail>> => {
-  return whiskeyAppApiClient.get<CaskDetail>(WHISKEY_API_PATH.CASK.DETAIL(caskId));
+export const getCaskDetail = (
+  caskId: number | string
+): Promise<ApiResponse<ApiResponse<CaskDetail>>> => {
+  return whiskeyAppApiClient.get<ApiResponse<CaskDetail>>(WHISKEY_API_PATH.CASK.DETAIL(caskId));
 };
 
 export const createCask = (data: CreateCaskRequest): Promise<ApiResponse<CaskDetail>> => {

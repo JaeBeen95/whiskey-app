@@ -1,6 +1,6 @@
 import { useQuery } from "@/hooks/useQuery";
-import { getCaskList } from "@/pages/cask/api";
-import type { CaskList, GetCaskListParams } from "@/pages/cask/types";
+import { getCaskList, getCaskDetail } from "@/pages/cask/api";
+import type { CaskDetail, CaskList, GetCaskListParams } from "@/pages/cask/types";
 import type { ApiResponse } from "@/types/api";
 
 export const useCaskListQuery = (params?: Partial<GetCaskListParams>) => {
@@ -25,4 +25,19 @@ export const useCaskListQuery = (params?: Partial<GetCaskListParams>) => {
   const caskContentList = caskListData?.content;
 
   return { data: caskContentList, isLoading, error };
+};
+
+export const useCaskDetailQuery = (caskId: number | string) => {
+  const {
+    data: caskDetailData,
+    isLoading,
+    error,
+  } = useQuery<ApiResponse<CaskDetail>>({
+    queryKey: ["caskDetail", caskId],
+    queryFn: () => getCaskDetail(caskId),
+  });
+
+  const caskDetail: CaskDetail | undefined = caskDetailData?.data;
+
+  return { data: caskDetail, isLoading, error };
 };

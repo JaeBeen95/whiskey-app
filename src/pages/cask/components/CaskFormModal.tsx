@@ -7,19 +7,15 @@ import Select from "@/components/Select";
 import Button from "@/components/Button";
 import type { CaskDetail } from "@/pages/cask/types";
 
-interface CaskFormData extends CaskDetail {
-  is_active: boolean;
-}
-
 interface CaskFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   mode: "create" | "edit";
-  initialData?: CaskFormData;
-  onSubmit: (data: CaskFormData) => Promise<void>;
+  initialData?: CaskDetail;
+  onSubmit: (data: CaskDetail) => Promise<void>;
 }
 
-const defaultCaskFormData: CaskFormData = {
+const defaultCaskFormData: CaskDetail = {
   cask_id: 0,
   cask_name: "",
   cask_number: "",
@@ -58,7 +54,7 @@ export default function CaskFormModal({
     handleSubmit,
     reset,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<CaskFormData>({
+  } = useForm<CaskDetail>({
     defaultValues: defaultCaskFormData,
     mode: "onChange",
   });

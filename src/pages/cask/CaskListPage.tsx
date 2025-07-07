@@ -1,7 +1,7 @@
 import CaskListContent from "@/pages/cask/components/CaskListContent";
 import CaskErrorFallback from "@/pages/cask/components/CaskErrorFallback";
 
-import { useCaskListQuery } from "@/pages/cask/hooks/useCaskListQuery";
+import { useCaskListQuery } from "@/pages/cask/hooks/useCaskQuery";
 import { useCaskSearchForm } from "@/pages/cask/hooks/useCaskSearchForm";
 import { useModal } from "@/hooks/useModal";
 import CaskFormModal from "@/pages/cask/components/CaskFormModal";
