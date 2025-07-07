@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useCaskSearchForm } from "@/pages/cask/hooks/useCaskSearchForm";
+import { useCaskListQuery } from "@/pages/cask/hooks/useCaskListQuery";
 import { useModal } from "@/hooks/useModal";
-import { useQuery } from "@/hooks/useQuery";
-import { getCaskList } from "@/pages/cask/api";
 import FormField from "@/components/FormField";
 import SearchFilter from "@/components/SearchFilter";
 import Input from "@/components/Input";
@@ -12,51 +10,16 @@ import Select from "@/components/Select";
 import Checkbox from "@/components/CheckBox";
 import CaskCard from "@/pages/cask/components/CaskCard";
 import { PlusIcon, MagnifyingGlassIcon, BuildingOfficeIcon } from "@heroicons/react/24/outline";
-import { useCaskListQuery } from "@/pages/cask/hooks/useCaskListQuery";
-
-interface SearchFormData {
-  cask_name: string;
-  warehouse: string;
-  distillery_true_name: string;
-  cask_size: string;
-  wood_type: string;
-  seasoning: string;
-  fill_type: string;
-  malt_type: string;
-  is_active: boolean;
-  order_by: string;
-}
 
 export default function CaskListPage() {
-  const { data: caskList, isLoading, error } = useCaskListQuery();
+  const { register, handleSubmit, currentSearchParams, handleSearch, handleReset } =
+    useCaskSearchForm();
 
+  const { data: caskList, isLoading, error } = useCaskListQuery(currentSearchParams);
   const { isOpen, openModal, closeModal } = useModal();
-  const [searchParams, setSearchParams] = useState<Partial<SearchFormData>>({});
-
-  const { register, handleSubmit, reset } = useForm<SearchFormData>({
-    defaultValues: { cask_name: "", warehouse: "", is_active: true, order_by: "cask_name,asc" },
-  });
 
   const handleCreateSubmit = async () => {
     closeModal();
-  };
-  const handleSearch: SubmitHandler<SearchFormData> = (data) => {
-    setSearchParams(data);
-  };
-  const handleReset = () => {
-    reset();
-    handleSearch({
-      cask_name: "",
-      warehouse: "",
-      is_active: true,
-      order_by: "cask_name,asc",
-      distillery_true_name: "",
-      cask_size: "",
-      wood_type: "",
-      seasoning: "",
-      fill_type: "",
-      malt_type: "",
-    });
   };
 
   return (
@@ -90,14 +53,6 @@ export default function CaskListPage() {
                 <option value="">모든 창고</option>
                 <option value="Warehouse A">Warehouse A</option>
                 <option value="Warehouse B">Warehouse B</option>
-              </Select>
-            </FormField>
-            <FormField label="정렬" htmlFor="order_by">
-              <Select id="order_by" {...register("order_by")}>
-                <option value="cask_name,asc">이름 (오름차순)</option>
-                <option value="cask_name,desc">이름 (내림차순)</option>
-                <option value="purchase_price,asc">가격 (낮은순)</option>
-                <option value="purchase_price,desc">가격 (높은순)</option>
               </Select>
             </FormField>
           </>

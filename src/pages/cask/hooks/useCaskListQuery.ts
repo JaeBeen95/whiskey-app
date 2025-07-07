@@ -11,13 +11,13 @@ export const useCaskListQuery = (params?: Partial<GetCaskListParams>) => {
 
   const requestParams: GetCaskListParams = {
     page: page ?? defaultPage,
-    size: size ?? defaultSize, 
-    sort: sort, 
-    ...searchDto, 
+    size: size ?? defaultSize,
+    sort: sort,
+    ...searchDto,
   };
 
   const { data, isLoading, error } = useQuery<ApiResponse<CaskList>>({
-    queryKey: ["caskList", requestParams],
+    queryKey: ["cask", requestParams],
     queryFn: () => getCaskList(requestParams),
   });
 
