@@ -1,4 +1,10 @@
-import type { ApiResponse } from "@/types/api";
+export interface CaskContent {
+  abv: number;
+  cask_id: number;
+  cask_name: string;
+  cask_number: string;
+  malt_type: string;
+}
 
 export interface CaskEvent {
   event_at: string;
@@ -30,51 +36,10 @@ export interface CaskDetail extends CaskContent {
   wood_type: string;
 }
 
-export interface CaskContent {
-  abv: number;
-  cask_id: number;
-  cask_name: string;
-  cask_number: string;
-  malt_type: string;
-}
-
 export interface Sort {
   empty: boolean;
   sorted: boolean;
   unsorted: boolean;
-}
-
-export interface CaskSearchDto {
-  warehouse?: string;
-  distillery_true_name?: string;
-  order_by?: number;
-  cask_size?: string;
-  wood_type?: string;
-  cask_number?: string;
-  cask_name?: string;
-  fill_type?: string;
-  is_active?: boolean;
-  malt_type?: string;
-  distillery_display_name?: string;
-  seasoning?: string;
-}
-
-export interface GetCaskListParams {
-  page: number;
-  size: number;
-  sort?: string[];
-  warehouse?: string;
-  distillery_true_name?: string;
-  order_by?: number;
-  cask_size?: string;
-  wood_type?: string;
-  cask_number?: string;
-  cask_name?: string;
-  fill_type?: string;
-  is_active?: boolean;
-  malt_type?: string;
-  distillery_display_name?: string;
-  seasoning?: string;
 }
 
 export interface CaskList {
@@ -98,7 +63,26 @@ export interface CaskList {
   totalPages: number;
 }
 
-export interface CaskListResponse extends ApiResponse<CaskList> {}
+export interface CaskSearchDto {
+  warehouse?: string;
+  distillery_true_name?: string;
+  order_by?: number;
+  cask_size?: string;
+  wood_type?: string;
+  cask_number?: string;
+  cask_name?: string;
+  fill_type?: string;
+  is_active?: boolean;
+  malt_type?: string;
+  distillery_display_name?: string;
+  seasoning?: string;
+}
+
+export interface GetCaskListParams extends CaskSearchDto {
+  page: number;
+  size: number;
+  sort?: string[];
+}
 
 export interface CreateCaskRequest {
   abv: number;

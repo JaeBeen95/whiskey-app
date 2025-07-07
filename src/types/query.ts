@@ -1,7 +1,7 @@
 import type { QueryClient } from "@/context/QueryClientProvider";
 import type { ApiResponse } from "@/types/api";
 
-export type QueryKey = string[];
+export type QueryKey = (string | number | boolean | object | null | undefined)[];
 export type SerializedQueryKey = string;
 
 export type AsyncStatus = "idle" | "loading" | "success" | "error";

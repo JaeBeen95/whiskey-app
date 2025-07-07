@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useModal } from "@/hooks/useModal";
+import { useQuery } from "@/hooks/useQuery";
+import { getCaskList } from "@/pages/cask/api";
 import FormField from "@/components/FormField";
 import SearchFilter from "@/components/SearchFilter";
 import Input from "@/components/Input";
@@ -10,9 +12,7 @@ import Select from "@/components/Select";
 import Checkbox from "@/components/CheckBox";
 import CaskCard from "@/pages/cask/components/CaskCard";
 import { PlusIcon, MagnifyingGlassIcon, BuildingOfficeIcon } from "@heroicons/react/24/outline";
-import type { CaskContent } from "@/pages/cask/types";
-import { useQuery } from "@/hooks/useQuery";
-import { getCaskList } from "@/pages/cask/api";
+import { useCaskListQuery } from "@/pages/cask/hooks/useCaskListQuery";
 
 interface SearchFormData {
   cask_name: string;
@@ -27,56 +27,8 @@ interface SearchFormData {
   order_by: string;
 }
 
-const mockCasks: CaskContent[] = [
-  {
-    cask_id: 1,
-    cask_name: "쿨일라 2011 #3124",
-    cask_number: "CASK-001",
-    malt_type: "Single Malt",
-    abv: 60.1,
-  },
-  {
-    cask_id: 2,
-    cask_name: "글렌알라키 2008",
-    cask_number: "CASK-002",
-    malt_type: "Single Malt",
-    abv: 55.8,
-  },
-  {
-    cask_id: 3,
-    cask_name: "맥캘란 18년 셰리",
-    cask_number: "CASK-003",
-    malt_type: "Single Malt",
-    abv: 43.0,
-  },
-  {
-    cask_id: 4,
-    cask_name: "야마자키 DR",
-    cask_number: "CASK-004",
-    malt_type: "Single Malt",
-    abv: 43.0,
-  },
-  {
-    cask_id: 5,
-    cask_name: "아드벡 코리브레칸",
-    cask_number: "CASK-005",
-    malt_type: "Single Malt",
-    abv: 57.1,
-  },
-  {
-    cask_id: 6,
-    cask_name: "라프로익 쿼터 캐스크",
-    cask_number: "CASK-006",
-    malt_type: "Single Malt",
-    abv: 48.0,
-  },
-];
-
 export default function CaskListPage() {
-  const { data } = useQuery({
-    queryKey: ["cask"],
-    queryFn: () => getCaskList({ page: 1, size: 10 }),
-  });
+  const { data: caskList, isLoading, error } = useCaskListQuery();
 
   const { isOpen, openModal, closeModal } = useModal();
   const [searchParams, setSearchParams] = useState<Partial<SearchFormData>>({});
@@ -179,7 +131,7 @@ export default function CaskListPage() {
 
       <div className="bg-deep-navy-800 p-6 rounded-xl shadow-lg border border-gold-500/20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockCasks.map((cask) => (
+          {caskList?.map((cask) => (
             <CaskCard key={cask.cask_id} cask={cask} />
           ))}
         </div>

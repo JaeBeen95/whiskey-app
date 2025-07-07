@@ -3,15 +3,19 @@ import { WHISKEY_API_PATH } from "@/constants/apiPath";
 import type {
   CaskDetail,
   CaskList,
-  CaskListResponse,
   CreateCaskRequest,
   GetCaskListParams,
   UpdateCaskRequest,
 } from "@/pages/cask/types";
 import type { ApiResponse } from "@/types/api";
 
-export const getCaskList = (params: GetCaskListParams): Promise<CaskListResponse> => {
-  return whiskeyAppApiClient.get<CaskList, GetCaskListParams>(WHISKEY_API_PATH.CASK.BASE, params);
+export const getCaskList = (
+  params: GetCaskListParams
+): Promise<ApiResponse<ApiResponse<CaskList>>> => {
+  return whiskeyAppApiClient.get<ApiResponse<CaskList>, GetCaskListParams>(
+    WHISKEY_API_PATH.CASK.BASE,
+    params
+  );
 };
 
 export const getCaskDetail = (caskId: number | string): Promise<ApiResponse<CaskDetail>> => {
