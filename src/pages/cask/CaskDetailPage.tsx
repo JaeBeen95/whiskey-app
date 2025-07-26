@@ -6,6 +6,7 @@ import DeleteConfirmModal from "@/components/modal/DeleteConfirmModal";
 import Dropdown from "@/components/dropdown/Dropdown";
 import DropdownItem from "@/components/dropdown/DropdownItem";
 import { EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { useDeleteCaskMutation } from "@/pages/cask/hooks/useCreateCaskMutation";
 
 export default function CaskDetailPage() {
   const { caskId } = useParams<{ caskId: string }>();
@@ -13,6 +14,7 @@ export default function CaskDetailPage() {
   if (!caskId) throw new Error("유효하지 않은 캐스크 ID입니다.");
 
   const { data: caskDetail } = useCaskDetailQuery(caskId);
+  const { mutate: deleteCaskMutation } = useDeleteCaskMutation();
 
   const {
     isOpen: isEditModalOpen,
@@ -26,9 +28,10 @@ export default function CaskDetailPage() {
   } = useModal();
 
   const handleConfirmDeleteCask = () => {
-    console.log("캐스크 삭제 실행");
+    deleteCaskMutation(caskId);
     closeDeleteModal();
   };
+
   const handleCaskFormSubmit = async (data: any) => {
     console.log(data);
     closeEditModal();
