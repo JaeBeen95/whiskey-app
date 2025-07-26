@@ -1,6 +1,6 @@
 import { useQueryClient } from "@/context/QueryClientProvider";
 import { useMutation } from "@/hooks/useMutation";
-import { createCask } from "@/pages/cask/api";
+import { createCask, deleteCask } from "@/pages/cask/api";
 
 export const useCreateCaskMutation = () => {
   const queryClient = useQueryClient();
@@ -8,7 +8,7 @@ export const useCreateCaskMutation = () => {
   return useMutation({
     mutationFn: createCask,
     onSuccess: (data) => {
-      alert(`${data.cask_id} 캐스크가 성공적으로 생성되었습니다.`);
+      alert(`${data.caskId} 캐스크가 성공적으로 생성되었습니다.`);
 
       queryClient.invalidateQueries({ queryKey: ["cask"] });
     },
@@ -18,3 +18,4 @@ export const useCreateCaskMutation = () => {
     },
   });
 };
+

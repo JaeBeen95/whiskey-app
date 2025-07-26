@@ -13,7 +13,6 @@ export default function CaskDetailPage() {
   if (!caskId) throw new Error("유효하지 않은 캐스크 ID입니다.");
 
   const { data: caskDetail } = useCaskDetailQuery(caskId);
-  console.log(caskDetail);
 
   const {
     isOpen: isEditModalOpen,
@@ -53,6 +52,22 @@ export default function CaskDetailPage() {
             </DropdownItem>
           </Dropdown>
         </div>
+
+        <CaskFormModal
+          isOpen={isEditModalOpen}
+          onClose={closeEditModal}
+          mode="edit"
+          initialData={caskDetail}
+          onSubmit={handleCaskFormSubmit}
+        />
+        <DeleteConfirmModal
+          isOpen={isDeleteCaskModalOpen}
+          onClose={closeDeleteModal}
+          onConfirm={handleConfirmDeleteCask}
+          title="캐스크 삭제"
+          itemName={caskDetail?.caskName}
+          itemType="캐스크"
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-4 bg-deep-navy-900/50 rounded-lg space-y-1">
@@ -183,22 +198,6 @@ export default function CaskDetailPage() {
           </Link>
         </div>
       </div>
-
-      <CaskFormModal
-        isOpen={isEditModalOpen}
-        onClose={closeEditModal}
-        mode="edit"
-        initialData={caskDetail}
-        onSubmit={handleCaskFormSubmit}
-      />
-      <DeleteConfirmModal
-        isOpen={isDeleteCaskModalOpen}
-        onClose={closeDeleteModal}
-        onConfirm={handleConfirmDeleteCask}
-        title="캐스크 삭제"
-        itemName={caskDetail?.caskName}
-        itemType="캐스크"
-      />
     </div>
   );
 }

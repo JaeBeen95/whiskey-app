@@ -35,8 +35,11 @@ export const useMutation = <T, U>(options: UseMutationOptions<T, U>): UseMutatio
         setStatus("success");
 
         if (responseData !== undefined) {
-          onSuccess?.(responseData);
-          callbacks?.onSuccess?.(responseData);
+          if (callbacks?.onSuccess) {
+            callbacks.onSuccess(responseData); 
+          } else { 
+            onSuccess?.(responseData); 
+          }
         }
 
         return response;
@@ -46,8 +49,11 @@ export const useMutation = <T, U>(options: UseMutationOptions<T, U>): UseMutatio
         setError(caughtError);
         setStatus("error");
 
-        onError?.(caughtError);
-        callbacks?.onError?.(caughtError);
+        if (callbacks?.onError) {
+          callbacks.onError(caughtError);
+        } else {
+          onError?.(caughtError);
+        }
       } finally {
         callbacks?.onSettled?.(responseData, caughtError);
       }
