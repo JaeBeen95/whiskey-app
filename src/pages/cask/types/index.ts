@@ -20,7 +20,7 @@ export interface CaskDetail extends CaskContent {
   capacity_liters: number;
   cask_currency: string;
   cask_size: string;
-  comment: string;
+  comment?: string;
   distillery_display_name: string;
   distillery_true_name: string;
   events: CaskEvent[];
@@ -34,7 +34,7 @@ export interface CaskDetail extends CaskContent {
   seasoning: string;
   warehouse: string;
   wood_type: string;
-  is_active: boolean;
+  is_active?: boolean;
 }
 
 export interface Sort {
@@ -94,22 +94,21 @@ export interface CreateCaskRequest {
   cask_number: string;
   cask_size: string;
   comment?: string;
-  distillery_display_name: string;
-  distillery_true_name: string;
+  distillery_display_name_id: number;
+  distillery_true_name_id: number;
   expected_arrival_price: number;
   fill_type: string;
   lpa: number;
   malt_type: string;
-  ola_rla: string;
+  olarla: string;
   price_per_bottle: number;
   price_per_lpa: number;
   purchase_price: number;
   seasoning: string;
-  warehouse: string;
+  warehouse_id: number;
   wood_type: string;
-  is_active?: boolean;
 }
 
-export interface UpdateCaskRequest extends Partial<CreateCaskRequest> {}
+export interface UpdateCaskRequest extends CreateCaskRequest {}
 
 export type EventType = "bottling" | "regauging" | "reracking" | "sampling" | "split" | "transfer";

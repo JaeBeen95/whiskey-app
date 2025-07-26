@@ -108,12 +108,15 @@ export class QueryClient {
     this.notifySubscribers(queryKey);
   }
 
-  invalidateQueries(queryKey: SerializedQueryKey) {
-    const queryState = this.queryCache.get(queryKey);
-    if (queryState) {
-      queryState.invalidate();
-      this.notifySubscribers(queryKey);
-    }
+  invalidateQueries(options: { queryKey: QueryKey }) {
+    const serializedKey = JSON.stringify(options.queryKey);
+
+    this.queryCache.forEach((queryState, serializedQueryKey) => {
+      if (serializedQueryKey.startsWith(serializedKey.slice(0, -1))) {
+        queryState.invalidate();
+        this.notifySubscribers(serializedQueryKey);
+      }
+    });
   }
 
   subscribe(queryKey: SerializedQueryKey, callback: () => void) {

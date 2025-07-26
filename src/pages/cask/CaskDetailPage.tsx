@@ -21,15 +21,13 @@ export default function CaskDetailPage() {
   } = useModal();
   const {
     isOpen: isDeleteCaskModalOpen,
-    openModal: openDeleteCaskModal,
-    closeModal: closeDeleteCaskModal,
+    openModal: openDeleteModal,
+    closeModal: closeDeleteModal,
   } = useModal();
 
-  const handleEditCask = () => openEditModal();
-  const handleDeleteCask = () => openDeleteCaskModal();
   const handleConfirmDeleteCask = () => {
     console.log("캐스크 삭제 실행");
-    closeDeleteCaskModal();
+    closeDeleteModal();
   };
   const handleCaskFormSubmit = async (data: any) => {
     console.log(data);
@@ -46,10 +44,10 @@ export default function CaskDetailPage() {
               <EllipsisVerticalIcon className="w-6 h-6 text-light-gray-50/70 hover:text-gold-500" />
             }
           >
-            <DropdownItem onClick={handleEditCask} icon={<PencilSquareIcon />}>
+            <DropdownItem onClick={openEditModal} icon={<PencilSquareIcon />}>
               수정하기
             </DropdownItem>
-            <DropdownItem onClick={handleDeleteCask} icon={<TrashIcon />}>
+            <DropdownItem onClick={openDeleteModal} icon={<TrashIcon />}>
               삭제하기
             </DropdownItem>
           </Dropdown>
@@ -194,7 +192,7 @@ export default function CaskDetailPage() {
       />
       <DeleteConfirmModal
         isOpen={isDeleteCaskModalOpen}
-        onClose={closeDeleteCaskModal}
+        onClose={closeDeleteModal}
         onConfirm={handleConfirmDeleteCask}
         title="캐스크 삭제"
         itemName={caskDetail?.cask_name}

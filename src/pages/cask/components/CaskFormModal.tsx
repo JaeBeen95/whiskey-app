@@ -5,41 +5,38 @@ import FormField from "@/components/FormField";
 import Input from "@/components/Input";
 import Select from "@/components/Select";
 import Button from "@/components/Button";
-import type { CaskDetail } from "@/pages/cask/types";
+import type { CaskDetail, CreateCaskRequest } from "@/pages/cask/types";
 
 interface CaskFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   mode: "create" | "edit";
   initialData?: CaskDetail;
-  onSubmit: (data: CaskDetail) => Promise<void>;
+  onSubmit: (data: CreateCaskRequest) => Promise<void>;
 }
 
-const defaultCaskFormData: CaskDetail = {
-  cask_id: 0,
-  cask_name: "",
-  cask_number: "",
-  distillery_display_name: "",
-  distillery_true_name: "",
-  warehouse: "",
-  cask_size: "",
-  wood_type: "",
-  seasoning: "",
-  fill_type: "",
-  malt_type: "",
+const defaultCaskFormData: CreateCaskRequest = {
   abv: 0,
   bulk_liter: 0,
   capacity_liters: 0,
-  lpa: 0,
-  ola_rla: "OLA",
-  purchase_price: 0,
   cask_currency: "GBP",
+  cask_name: "",
+  cask_number: "",
+  cask_size: "",
+  comment: "",
+  distillery_display_name_id: 0,
+  distillery_true_name_id: 0,
   expected_arrival_price: 0,
+  fill_type: "",
+  lpa: 0,
+  malt_type: "",
+  olarla: "OLA",
   price_per_bottle: 0,
   price_per_lpa: 0,
-  comment: "",
-  is_active: true,
-  events: [],
+  purchase_price: 0,
+  seasoning: "",
+  warehouse_id: 0,
+  wood_type: "",
 };
 
 export default function CaskFormModal({
@@ -54,7 +51,7 @@ export default function CaskFormModal({
     handleSubmit,
     reset,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<CaskDetail>({
+  } = useForm<CreateCaskRequest>({
     defaultValues: defaultCaskFormData,
     mode: "onChange",
   });
@@ -71,7 +68,7 @@ export default function CaskFormModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={mode === "create" ? "캐스크 등록" : "캐스크 수정"}
+      title={mode === "create" ? "새 캐스크 등록" : "캐스크 정보 수정"}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 max-h-[60vh] overflow-y-auto pr-3">
@@ -89,41 +86,34 @@ export default function CaskFormModal({
             <Input id="cask_number" hasError={!!errors.cask_number} {...register("cask_number")} />
           </FormField>
           <FormField
-            label="증류소 (표시)"
-            htmlFor="distillery_display_name"
-            error={errors.distillery_display_name?.message}
+            label="증류소 (표시 ID)"
+            htmlFor="distillery_display_name_id"
+            error={errors.distillery_display_name_id?.message}
           >
             <Input
-              id="distillery_display_name"
-              hasError={!!errors.distillery_display_name}
-              {...register("distillery_display_name")}
+              id="distillery_display_name_id"
+              hasError={!!errors.distillery_display_name_id}
+              {...register("distillery_display_name_id")}
             />
           </FormField>
           <FormField
-            label="증류소 (실제)"
-            htmlFor="distillery_true_name"
-            error={errors.distillery_true_name?.message}
+            label="증류소 (실제 ID)"
+            htmlFor="distillery_true_name_id"
+            error={errors.distillery_true_name_id?.message}
           >
             <Input
-              id="distillery_true_name"
-              hasError={!!errors.distillery_true_name}
-              {...register("distillery_true_name")}
+              id="distillery_true_name_id"
+              hasError={!!errors.distillery_true_name_id}
+              {...register("distillery_true_name_id")}
             />
           </FormField>
-          <FormField label="창고" htmlFor="warehouse" error={errors.warehouse?.message}>
-            <Input id="warehouse" hasError={!!errors.warehouse} {...register("warehouse")} />
-          </FormField>
-          <div className="md:col-span-2 flex items-center my-2">
-            <input
-              id="is_active"
-              type="checkbox"
-              className="h-4 w-4 rounded text-gold-500 border-gold-500/30 focus:ring-gold-500 bg-dark-gray-700"
-              {...register("is_active")}
+          <FormField label="창고" htmlFor="warehouse" error={errors.warehouse_id?.message}>
+            <Input
+              id="warehouse_id"
+              hasError={!!errors.warehouse_id}
+              {...register("warehouse_id")}
             />
-            <label htmlFor="is_active" className="ml-3 block text-sm text-light-gray-50">
-              활성 캐스크
-            </label>
-          </div>
+          </FormField>
           <div className="md:col-span-2">
             <FormField label="코멘트" htmlFor="comment" error={errors.comment?.message}>
               <textarea
@@ -192,8 +182,8 @@ export default function CaskFormModal({
               {...register("lpa", { valueAsNumber: true })}
             />
           </FormField>
-          <FormField label="OLA/RLA" htmlFor="ola_rla" error={errors.ola_rla?.message}>
-            <Input id="ola_rla" hasError={!!errors.ola_rla} {...register("ola_rla")} />
+          <FormField label="OLA" htmlFor="olarla" error={errors.olarla?.message}>
+            <Input id="olarla" hasError={!!errors.olarla} {...register("olarla")} />
           </FormField>
           <h3 className="md:col-span-2 text-lg font-serif text-gold-500/90 mb-2 mt-4 border-b border-gold-500/20 pb-2">
             재무 정보
