@@ -58,11 +58,11 @@ export default function CaskDetailPage() {
             <h3 className="font-bold text-lg mb-2 text-gold-500/90">기본 정보</h3>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">이름:</span>
-              {caskDetail?.cask_name}
+              {caskDetail?.caskName}
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">번호:</span>
-              {caskDetail?.cask_number}
+              {caskDetail?.caskNumber}
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">
@@ -141,7 +141,7 @@ export default function CaskDetailPage() {
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">
                 몰트 타입:
               </span>
-              {caskDetail?.malt_type}
+              {caskDetail?.maltType}
             </p>
           </div>
           <div className="md:col-span-2 p-4 bg-deep-navy-900/50 rounded-lg space-y-1">
@@ -195,7 +195,7 @@ export default function CaskDetailPage() {
         onClose={closeDeleteModal}
         onConfirm={handleConfirmDeleteCask}
         title="캐스크 삭제"
-        itemName={caskDetail?.cask_name}
+        itemName={caskDetail?.caskName}
         itemType="캐스크"
       />
     </div>

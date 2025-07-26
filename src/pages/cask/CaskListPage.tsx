@@ -20,7 +20,6 @@ export default function CaskListPage() {
   const { mutate: createCaskMutate } = useCreateCaskMutation();
 
   const handleCreateSubmit = async (formData: CreateCaskRequest) => {
-    console.log(formData);
     await createCaskMutate(formData);
     closeModal();
   };

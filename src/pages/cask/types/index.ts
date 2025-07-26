@@ -1,9 +1,9 @@
 export interface CaskContent {
   abv: number;
-  cask_id: number;
-  cask_name: string;
-  cask_number: string;
-  malt_type: string;
+  caskId: number;
+  caskName: string;
+  caskNumber: string;
+  maltType: string;
 }
 
 export interface CaskEvent {
