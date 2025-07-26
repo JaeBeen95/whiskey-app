@@ -1,26 +1,33 @@
 import { useCallback } from "react";
 import { useAsyncState } from "@/hooks/useAsyncState";
 import type { UseMutationOptions, UseMutationResult } from "@/types/query";
+import type { ApiResponse } from "@/types/api";
 
-export const useMutation = <T, U>(options: UseMutationOptions<T, U>): UseMutationResult<T, U> => {
-  const { mutationFn, onSuccess, onError } = options;
+export const useMutation = <TData, TVariables>(
+  options: UseMutationOptions<TData, TVariables>
+): UseMutationResult<TData, TVariables> => {
+  const { mutationFn, onSuccess, onError, onSettled } = options;
 
   const { data, setData, setStatus, setError, isLoading, isSuccess, isError, status, error } =
-    useAsyncState<T>();
+    useAsyncState<TData>();
 
   const mutate = useCallback(
     async (
-      variables: U,
+      variables: TVariables,
       callbacks?: {
-        onSuccess?: (data: T) => void;
-        onError?: (error: Error) => void;
-        onSettled?: (data: T | undefined, error: Error | null) => void;
+        onSuccess?: (data: TData, variables: TVariables) => Promise<unknown> | unknown;
+        onError?: (error: Error, variables: TVariables) => void;
+        onSettled?: (
+          data: TData | undefined,
+          error: Error | null,
+          variables: TVariables
+        ) => Promise<unknown> | unknown;
       }
-    ) => {
+    ): Promise<ApiResponse<TData> | undefined> => {
       setStatus("loading");
       setError(null);
 
-      let responseData: T | undefined;
+      let responseData: TData | undefined;
       let caughtError: Error | null = null;
 
       try {
@@ -34,12 +41,10 @@ export const useMutation = <T, U>(options: UseMutationOptions<T, U>): UseMutatio
         setData(responseData);
         setStatus("success");
 
-        if (responseData !== undefined) {
-          if (callbacks?.onSuccess) {
-            callbacks.onSuccess(responseData); 
-          } else { 
-            onSuccess?.(responseData); 
-          }
+        if (callbacks?.onSuccess) {
+          await Promise.resolve(callbacks.onSuccess(responseData!, variables));
+        } else {
+          await Promise.resolve(onSuccess?.(responseData!, variables));
         }
 
         return response;
@@ -50,15 +55,19 @@ export const useMutation = <T, U>(options: UseMutationOptions<T, U>): UseMutatio
         setStatus("error");
 
         if (callbacks?.onError) {
-          callbacks.onError(caughtError);
+          callbacks.onError(caughtError, variables);
         } else {
-          onError?.(caughtError);
+          onError?.(caughtError, variables);
         }
       } finally {
-        callbacks?.onSettled?.(responseData, caughtError);
+        if (callbacks?.onSettled) {
+          await Promise.resolve(callbacks.onSettled(responseData, caughtError, variables));
+        } else {
+          await Promise.resolve(onSettled?.(responseData, caughtError, variables));
+        }
       }
     },
-    [mutationFn, onSuccess, onError, setData, setStatus, setError]
+    [mutationFn, onSuccess, onError, onSettled, setData, setStatus, setError]
   );
 
   return { mutate, data, status, error, isLoading, isSuccess, isError };
