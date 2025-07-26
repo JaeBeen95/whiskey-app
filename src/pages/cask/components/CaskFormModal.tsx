@@ -17,26 +17,26 @@ interface CaskFormModalProps {
 
 const defaultCaskFormData: CreateCaskRequest = {
   abv: 0,
-  bulk_liter: 0,
-  capacity_liters: 0,
-  cask_currency: "GBP",
-  cask_name: "",
-  cask_number: "",
-  cask_size: "",
+  bulkLiter: 0,
+  capacityLiters: 0,
+  caskCurrency: "GBP",
+  caskName: "",
+  caskNumber: "",
+  caskSize: "",
   comment: "",
-  distillery_display_name_id: 0,
-  distillery_true_name_id: 0,
-  expected_arrival_price: 0,
-  fill_type: "",
+  distilleryDisplayNameId: 0,
+  distilleryTrueNameId: 0,
+  expectedArrivalPrice: 0,
+  fillType: "",
   lpa: 0,
-  malt_type: "",
+  maltType: "",
   olarla: "OLA",
-  price_per_bottle: 0,
-  price_per_lpa: 0,
-  purchase_price: 0,
+  pricePerBottle: 0,
+  pricePerLpa: 0,
+  purchasePrice: 0,
   seasoning: "",
-  warehouse_id: 0,
-  wood_type: "",
+  warehouseId: 0,
+  woodType: "",
 };
 
 export default function CaskFormModal({
@@ -75,44 +75,40 @@ export default function CaskFormModal({
           <h3 className="md:col-span-2 text-lg font-serif text-gold-500/90 mb-2 mt-2 border-b border-gold-500/20 pb-2">
             기본 정보
           </h3>
-          <FormField label="캐스크 이름" htmlFor="cask_name" error={errors.cask_name?.message}>
+          <FormField label="캐스크 이름" htmlFor="caskName" error={errors.caskName?.message}>
             <Input
-              id="cask_name"
-              hasError={!!errors.cask_name}
-              {...register("cask_name", { required: "필수 항목입니다." })}
+              id="caskName"
+              hasError={!!errors.caskName}
+              {...register("caskName", { required: "필수 항목입니다." })}
             />
           </FormField>
-          <FormField label="캐스크 번호" htmlFor="cask_number" error={errors.cask_number?.message}>
-            <Input id="cask_number" hasError={!!errors.cask_number} {...register("cask_number")} />
+          <FormField label="캐스크 번호" htmlFor="caskNumber" error={errors.caskNumber?.message}>
+            <Input id="caskNumber" hasError={!!errors.caskNumber} {...register("caskNumber")} />
           </FormField>
           <FormField
             label="증류소 (표시 ID)"
-            htmlFor="distillery_display_name_id"
-            error={errors.distillery_display_name_id?.message}
+            htmlFor="distilleryDisplayNameId"
+            error={errors.distilleryDisplayNameId?.message}
           >
             <Input
-              id="distillery_display_name_id"
-              hasError={!!errors.distillery_display_name_id}
-              {...register("distillery_display_name_id")}
+              id="distilleryDisplayNameId"
+              hasError={!!errors.distilleryDisplayNameId}
+              {...register("distilleryDisplayNameId")}
             />
           </FormField>
           <FormField
             label="증류소 (실제 ID)"
-            htmlFor="distillery_true_name_id"
-            error={errors.distillery_true_name_id?.message}
+            htmlFor="distilleryTrueNameId"
+            error={errors.distilleryTrueNameId?.message}
           >
             <Input
-              id="distillery_true_name_id"
-              hasError={!!errors.distillery_true_name_id}
-              {...register("distillery_true_name_id")}
+              id="distilleryTrueNameId"
+              hasError={!!errors.distilleryTrueNameId}
+              {...register("distilleryTrueNameId")}
             />
           </FormField>
-          <FormField label="창고" htmlFor="warehouse" error={errors.warehouse_id?.message}>
-            <Input
-              id="warehouse_id"
-              hasError={!!errors.warehouse_id}
-              {...register("warehouse_id")}
-            />
+          <FormField label="창고" htmlFor="warehouse" error={errors.warehouseId?.message}>
+            <Input id="warehouseId" hasError={!!errors.warehouseId} {...register("warehouseId")} />
           </FormField>
           <div className="md:col-span-2">
             <FormField label="코멘트" htmlFor="comment" error={errors.comment?.message}>
@@ -127,20 +123,20 @@ export default function CaskFormModal({
           <h3 className="md:col-span-2 text-lg font-serif text-gold-500/90 mb-2 mt-4 border-b border-gold-500/20 pb-2">
             물리적 특성
           </h3>
-          <FormField label="캐스크 크기" htmlFor="cask_size" error={errors.cask_size?.message}>
-            <Input id="cask_size" hasError={!!errors.cask_size} {...register("cask_size")} />
+          <FormField label="캐스크 크기" htmlFor="caskSize" error={errors.caskSize?.message}>
+            <Input id="caskSize" hasError={!!errors.caskSize} {...register("caskSize")} />
           </FormField>
-          <FormField label="나무 종류" htmlFor="wood_type" error={errors.wood_type?.message}>
-            <Input id="wood_type" hasError={!!errors.wood_type} {...register("wood_type")} />
+          <FormField label="나무 종류" htmlFor="woodType" error={errors.woodType?.message}>
+            <Input id="woodType" hasError={!!errors.woodType} {...register("woodType")} />
           </FormField>
           <FormField label="시즈닝" htmlFor="seasoning" error={errors.seasoning?.message}>
             <Input id="seasoning" hasError={!!errors.seasoning} {...register("seasoning")} />
           </FormField>
-          <FormField label="충전 유형" htmlFor="fill_type" error={errors.fill_type?.message}>
-            <Input id="fill_type" hasError={!!errors.fill_type} {...register("fill_type")} />
+          <FormField label="충전 유형" htmlFor="fillType" error={errors.fillType?.message}>
+            <Input id="fillType" hasError={!!errors.fillType} {...register("fillType")} />
           </FormField>
-          <FormField label="몰트 타입" htmlFor="malt_type" error={errors.malt_type?.message}>
-            <Input id="malt_type" hasError={!!errors.malt_type} {...register("malt_type")} />
+          <FormField label="몰트 타입" htmlFor="maltType" error={errors.maltType?.message}>
+            <Input id="maltType" hasError={!!errors.maltType} {...register("maltType")} />
           </FormField>
           <FormField label="ABV (%)" htmlFor="abv" error={errors.abv?.message}>
             <Input
@@ -151,26 +147,26 @@ export default function CaskFormModal({
               {...register("abv", { valueAsNumber: true })}
             />
           </FormField>
-          <FormField label="벌크 리터 (L)" htmlFor="bulk_liter" error={errors.bulk_liter?.message}>
+          <FormField label="벌크 리터 (L)" htmlFor="bulkLiter" error={errors.bulkLiter?.message}>
             <Input
-              id="bulk_liter"
+              id="bulkLiter"
               type="number"
               step="0.1"
-              hasError={!!errors.bulk_liter}
-              {...register("bulk_liter", { valueAsNumber: true })}
+              hasError={!!errors.bulkLiter}
+              {...register("bulkLiter", { valueAsNumber: true })}
             />
           </FormField>
           <FormField
             label="용량 리터 (L)"
-            htmlFor="capacity_liters"
-            error={errors.capacity_liters?.message}
+            htmlFor="capacityLiters"
+            error={errors.capacityLiters?.message}
           >
             <Input
-              id="capacity_liters"
+              id="capacityLiters"
               type="number"
               step="0.1"
-              hasError={!!errors.capacity_liters}
-              {...register("capacity_liters", { valueAsNumber: true })}
+              hasError={!!errors.capacityLiters}
+              {...register("capacityLiters", { valueAsNumber: true })}
             />
           </FormField>
           <FormField label="LPA" htmlFor="lpa" error={errors.lpa?.message}>
@@ -190,26 +186,26 @@ export default function CaskFormModal({
           </h3>
           <FormField
             label="구매 가격"
-            htmlFor="purchase_price"
-            error={errors.purchase_price?.message}
+            htmlFor="purchasePrice"
+            error={errors.purchasePrice?.message}
           >
             <Input
-              id="purchase_price"
+              id="purchasePrice"
               type="number"
               step="0.01"
-              hasError={!!errors.purchase_price}
-              {...register("purchase_price", { valueAsNumber: true })}
+              hasError={!!errors.purchasePrice}
+              {...register("purchasePrice", { valueAsNumber: true })}
             />
           </FormField>
           <FormField
             label="캐스크 통화"
-            htmlFor="cask_currency"
-            error={errors.cask_currency?.message}
+            htmlFor="caskCurrency"
+            error={errors.caskCurrency?.message}
           >
             <Select
-              id="cask_currency"
-              hasError={!!errors.cask_currency}
-              {...register("cask_currency")}
+              id="caskCurrency"
+              hasError={!!errors.caskCurrency}
+              {...register("caskCurrency")}
             >
               <option>GBP</option>
               <option>USD</option>
@@ -219,41 +215,37 @@ export default function CaskFormModal({
           </FormField>
           <FormField
             label="예상 도착 가격"
-            htmlFor="expected_arrival_price"
-            error={errors.expected_arrival_price?.message}
+            htmlFor="expectedArrivalPrice"
+            error={errors.expectedArrivalPrice?.message}
           >
             <Input
-              id="expected_arrival_price"
+              id="expectedArrivalPrice"
               type="number"
               step="0.01"
-              hasError={!!errors.expected_arrival_price}
-              {...register("expected_arrival_price", { valueAsNumber: true })}
+              hasError={!!errors.expectedArrivalPrice}
+              {...register("expectedArrivalPrice", { valueAsNumber: true })}
             />
           </FormField>
           <FormField
             label="병당 가격"
-            htmlFor="price_per_bottle"
-            error={errors.price_per_bottle?.message}
+            htmlFor="pricePerBottle"
+            error={errors.pricePerBottle?.message}
           >
             <Input
-              id="price_per_bottle"
+              id="pricePerBottle"
               type="number"
               step="0.01"
-              hasError={!!errors.price_per_bottle}
-              {...register("price_per_bottle", { valueAsNumber: true })}
+              hasError={!!errors.pricePerBottle}
+              {...register("pricePerBottle", { valueAsNumber: true })}
             />
           </FormField>
-          <FormField
-            label="LPA당 가격"
-            htmlFor="price_per_lpa"
-            error={errors.price_per_lpa?.message}
-          >
+          <FormField label="LPA당 가격" htmlFor="pricePerLpa" error={errors.pricePerLpa?.message}>
             <Input
-              id="price_per_lpa"
+              id="pricePerLpa"
               type="number"
               step="0.01"
-              hasError={!!errors.price_per_lpa}
-              {...register("price_per_lpa", { valueAsNumber: true })}
+              hasError={!!errors.pricePerLpa}
+              {...register("pricePerLpa", { valueAsNumber: true })}
             />
           </FormField>
         </div>

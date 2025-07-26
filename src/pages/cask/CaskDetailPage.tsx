@@ -13,6 +13,7 @@ export default function CaskDetailPage() {
   if (!caskId) throw new Error("유효하지 않은 캐스크 ID입니다.");
 
   const { data: caskDetail } = useCaskDetailQuery(caskId);
+  console.log(caskDetail);
 
   const {
     isOpen: isEditModalOpen,
@@ -68,13 +69,13 @@ export default function CaskDetailPage() {
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">
                 증류소 (실제):
               </span>
-              {caskDetail?.distillery_true_name}
+              {caskDetail?.distilleryTrueName}
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">
                 증류소 (표시):
               </span>
-              {caskDetail?.distillery_display_name}
+              {caskDetail?.distilleryDisplayName}
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">창고:</span>
@@ -97,13 +98,13 @@ export default function CaskDetailPage() {
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">
                 벌크 리터:
               </span>
-              {caskDetail?.bulk_liter}L
+              {caskDetail?.bulkLiter}L
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">
                 용량 리터:
               </span>
-              {caskDetail?.capacity_liters}L
+              {caskDetail?.capacityLiters}L
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">LPA:</span>
@@ -113,19 +114,19 @@ export default function CaskDetailPage() {
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">
                 OLA/RLA:
               </span>
-              {caskDetail?.ola_rla}
+              {caskDetail?.olarla}
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">
                 캐스크 크기:
               </span>
-              {caskDetail?.cask_size}
+              {caskDetail?.caskSize}
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">
                 나무 종류:
               </span>
-              {caskDetail?.wood_type}
+              {caskDetail?.woodType}
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">시즈닝:</span>
@@ -135,7 +136,7 @@ export default function CaskDetailPage() {
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">
                 충전 유형:
               </span>
-              {caskDetail?.fill_type}
+              {caskDetail?.fillType}
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-28 inline-block">
@@ -150,25 +151,25 @@ export default function CaskDetailPage() {
               <span className="font-semibold text-light-gray-50/70 w-32 inline-block">
                 구매 가격:
               </span>
-              {caskDetail?.purchase_price} {caskDetail?.cask_currency}
+              {caskDetail?.purchasePrice} {caskDetail?.caskCurrency}
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-32 inline-block">
                 예상 도착 가격:
               </span>
-              {caskDetail?.expected_arrival_price} {caskDetail?.cask_currency}
+              {caskDetail?.expectedArrivalPrice} {caskDetail?.caskCurrency}
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-32 inline-block">
                 병당 가격:
               </span>
-              {caskDetail?.price_per_bottle} {caskDetail?.cask_currency}
+              {caskDetail?.pricePerBottle} {caskDetail?.caskCurrency}
             </p>
             <p>
               <span className="font-semibold text-light-gray-50/70 w-32 inline-block">
                 LPA당 가격:
               </span>
-              {caskDetail?.price_per_lpa} {caskDetail?.cask_currency}
+              {caskDetail?.pricePerLpa} {caskDetail?.caskCurrency}
             </p>
           </div>
         </div>

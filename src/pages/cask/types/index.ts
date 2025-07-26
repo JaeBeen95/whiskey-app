@@ -16,25 +16,25 @@ export interface CaskEvent {
 }
 
 export interface CaskDetail extends CaskContent {
-  bulk_liter: number;
-  capacity_liters: number;
-  cask_currency: string;
-  cask_size: string;
+  bulkLiter: number;
+  capacityLiters: number;
+  caskCurrency: string;
+  caskSize: string;
   comment?: string;
-  distillery_display_name: string;
-  distillery_true_name: string;
+  distilleryDisplayName: string;
+  distilleryTrueName: string;
   events: CaskEvent[];
-  expected_arrival_price: number;
-  fill_type: string;
+  expectedArrivalPrice: number;
+  fillType: string;
   lpa: number;
-  ola_rla: string;
-  price_per_bottle: number;
-  price_per_lpa: number;
-  purchase_price: number;
+  olarla: string;
+  pricePerBottle: number;
+  pricePerLpa: number;
+  purchasePrice: number;
   seasoning: string;
   warehouse: string;
-  wood_type: string;
-  is_active?: boolean;
+  woodType: string;
+  isActive?: boolean;
 }
 
 export interface Sort {
@@ -66,16 +66,16 @@ export interface CaskList {
 
 export interface CaskSearchDto {
   warehouse?: string;
-  distillery_true_name?: string;
-  order_by?: number;
-  cask_size?: string;
-  wood_type?: string;
-  cask_number?: string;
-  cask_name?: string;
-  fill_type?: string;
-  is_active?: boolean;
-  malt_type?: string;
-  distillery_display_name?: string;
+  distilleryTrueName?: string;
+  orderBy?: number;
+  caskSize?: string;
+  woodType?: string;
+  caskNumber?: string;
+  caskName?: string;
+  fillType?: string;
+  isActive?: boolean;
+  maltType?: string;
+  distilleryDisplayName?: string;
   seasoning?: string;
 }
 
@@ -87,26 +87,26 @@ export interface GetCaskListParams extends CaskSearchDto {
 
 export interface CreateCaskRequest {
   abv: number;
-  bulk_liter: number;
-  capacity_liters: number;
-  cask_currency: string;
-  cask_name: string;
-  cask_number: string;
-  cask_size: string;
+  bulkLiter: number;
+  capacityLiters: number;
+  caskCurrency: string;
+  caskName: string;
+  caskNumber: string;
+  caskSize: string;
   comment?: string;
-  distillery_display_name_id: number;
-  distillery_true_name_id: number;
-  expected_arrival_price: number;
-  fill_type: string;
+  distilleryDisplayNameId: number;
+  distilleryTrueNameId: number;
+  expectedArrivalPrice: number;
+  fillType: string;
   lpa: number;
-  malt_type: string;
+  maltType: string;
   olarla: string;
-  price_per_bottle: number;
-  price_per_lpa: number;
-  purchase_price: number;
+  pricePerBottle: number;
+  pricePerLpa: number;
+  purchasePrice: number;
   seasoning: string;
-  warehouse_id: number;
-  wood_type: string;
+  warehouseId: number;
+  woodType: string;
 }
 
 export interface UpdateCaskRequest extends CreateCaskRequest {}

@@ -12,12 +12,12 @@ interface CaskBasicFilterProps {
 export default function CaskBasicFilter({ register }: CaskBasicFilterProps) {
   return (
     <>
-      <FormField label="캐스크 이름/번호" htmlFor="cask_name">
+      <FormField label="캐스크 이름/번호" htmlFor="caskName">
         <Input
-          id="cask_name"
+          id="caskName"
           icon={<MagnifyingGlassIcon className="w-5 h-5" />}
           placeholder="이름 또는 번호로 검색..."
-          {...register("cask_name")}
+          {...register("caskName")}
         />
       </FormField>
       <FormField label="창고" htmlFor="warehouse">
