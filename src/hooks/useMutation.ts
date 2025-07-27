@@ -62,7 +62,7 @@ export const useMutation = <TData, TVariables>(
 
       executeMutation();
     },
-    [mutationFn, onSuccess, onError, onSettled, setData, setStatus, setError]
+    [mutationFn, onSuccess, onError, onSettled]
   );
 
   return { mutate, data, status, error, isLoading, isSuccess, isError };

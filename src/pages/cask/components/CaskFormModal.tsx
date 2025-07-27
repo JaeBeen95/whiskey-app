@@ -12,7 +12,7 @@ interface CaskFormModalProps {
   onClose: () => void;
   mode: "create" | "edit";
   initialData?: CaskDetail;
-  onSubmit: (data: CreateCaskRequest) => Promise<void>;
+  onSubmit: (data: CreateCaskRequest) => void;
 }
 
 const defaultCaskFormData: CreateCaskRequest = {

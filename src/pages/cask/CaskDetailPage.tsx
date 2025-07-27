@@ -1,12 +1,13 @@
 import { useParams, Link } from "react-router-dom";
 import { useCaskDetailQuery } from "@/pages/cask/hooks/useCaskQuery";
+import { useDeleteCaskMutation, useEditCaskMutation } from "@/pages/cask/hooks/useCaskMutation";
 import { useModal } from "@/hooks/useModal";
 import CaskFormModal from "@/pages/cask/components/CaskFormModal";
 import DeleteConfirmModal from "@/components/modal/DeleteConfirmModal";
 import Dropdown from "@/components/dropdown/Dropdown";
 import DropdownItem from "@/components/dropdown/DropdownItem";
 import { EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { useDeleteCaskMutation } from "@/pages/cask/hooks/useCreateCaskMutation";
+import type { UpdateCaskRequest } from "@/pages/cask/types";
 
 export default function CaskDetailPage() {
   const { caskId } = useParams<{ caskId: string }>();
@@ -15,6 +16,7 @@ export default function CaskDetailPage() {
 
   const { data: caskDetail } = useCaskDetailQuery(caskId);
   const { mutate: deleteCaskMutation } = useDeleteCaskMutation();
+  const { mutate: editCaskMutation } = useEditCaskMutation();
 
   const {
     isOpen: isEditModalOpen,
@@ -32,8 +34,8 @@ export default function CaskDetailPage() {
     closeDeleteModal();
   };
 
-  const handleCaskFormSubmit = async (data: any) => {
-    console.log(data);
+  const handleEditCaskSubmit = (data: UpdateCaskRequest) => {
+    editCaskMutation({ caskId, data });
     closeEditModal();
   };
 
@@ -61,7 +63,7 @@ export default function CaskDetailPage() {
           onClose={closeEditModal}
           mode="edit"
           initialData={caskDetail}
-          onSubmit={handleCaskFormSubmit}
+          onSubmit={handleEditCaskSubmit}
         />
         <DeleteConfirmModal
           isOpen={isDeleteCaskModalOpen}

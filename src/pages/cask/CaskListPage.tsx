@@ -2,7 +2,7 @@ import CaskListContent from "@/pages/cask/components/CaskListContent";
 import CaskErrorFallback from "@/pages/cask/components/CaskErrorFallback";
 import { useCaskListQuery } from "@/pages/cask/hooks/useCaskQuery";
 import { useCaskSearchForm } from "@/pages/cask/hooks/useCaskSearchForm";
-import { useCreateCaskMutation } from "@/pages/cask/hooks/useCreateCaskMutation";
+import { useCreateCaskMutation } from "@/pages/cask/hooks/useCaskMutation";
 import { useModal } from "@/hooks/useModal";
 import CaskFormModal from "@/pages/cask/components/CaskFormModal";
 import PageWrapper from "@/components/wrapper/PageWrapper";
@@ -19,8 +19,8 @@ export default function CaskListPage() {
 
   const { mutate: createCaskMutate } = useCreateCaskMutation();
 
-  const handleCreateSubmit = async (formData: CreateCaskRequest) => {
-    await createCaskMutate(formData);
+  const handleCreateSubmit = (formData: CreateCaskRequest) => {
+    createCaskMutate(formData);
     closeModal();
   };
 
