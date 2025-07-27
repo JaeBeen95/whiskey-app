@@ -11,15 +11,15 @@ const apiClient: AxiosInstance = axios.create({
   baseURL,
 });
 
-apiClient.interceptors.request.use(
-  (config) => {
-    const accessToken = sessionStorage.getItem("accessToken");
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
+apiClient.interceptors.response.use(
+  (response) => response,
   (error: AxiosError) => {
+    if (error.response?.status === 401) {
+      sessionStorage.removeItem("accessToken");
+      alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+      window.location.href = "/login";
+    }
+
     return Promise.reject(error);
   }
 );
