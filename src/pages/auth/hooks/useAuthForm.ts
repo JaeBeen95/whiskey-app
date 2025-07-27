@@ -1,6 +1,13 @@
 import { useForm } from "react-hook-form";
 import { useLoginMutation, useSignupMutation } from "@/pages/auth/hooks/useAuthMutation";
-import type { LoginFormValues, SignupFormValues } from "@/pages/auth/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, signupSchema } from "@/pages/auth/utils/auth.schema";
+import type {
+  LoginFormData,
+  LoginFormValues,
+  SignupFormData,
+  SignupFormValues,
+} from "@/pages/auth/types";
 
 export const useSignupForm = () => {
   const { mutate: signupMutate, isLoading } = useSignupMutation();
@@ -9,15 +16,14 @@ export const useSignupForm = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-    watch,
   } = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
     mode: "all",
   });
 
-  const password = watch("password", "");
-
-  const onSubmit = async (data: SignupFormValues) => {
-    await signupMutate({ username: data.username, password: data.password });
+  const onSubmit = (data: SignupFormData) => {
+    const { confirmPassword, ...submissionData } = data;
+    signupMutate(submissionData);
   };
 
   return {
@@ -26,7 +32,6 @@ export const useSignupForm = () => {
     errors,
     isValid,
     isLoading,
-    passwordWatch: password,
   };
 };
 
@@ -38,13 +43,13 @@ export const useLoginForm = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     mode: "onBlur",
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
-    await loginMutate({ username: data.username, password: data.password });
+  const onSubmit = (data: LoginFormData) => {
+    loginMutate(data);
   };
-
   return {
     register,
     handleSubmit: handleSubmit(onSubmit),

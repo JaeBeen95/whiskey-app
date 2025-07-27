@@ -25,9 +25,7 @@ export default function LoginPage() {
             hasError={!!errors.username}
             type="text"
             placeholder="사용자 아이디"
-            {...register("username", {
-              required: "아이디는 필수입니다.",
-            })}
+            {...register("username")}
           />
         </FormField>
         <FormField label="Password" htmlFor="password" error={errors.password?.message}>
@@ -37,9 +35,7 @@ export default function LoginPage() {
             hasError={!!errors.password}
             type="password"
             placeholder="비밀번호"
-            {...register("password", {
-              required: "비밀번호는 필수입니다.",
-            })}
+            {...register("password")}
           />
         </FormField>
         <div className="mb-6">

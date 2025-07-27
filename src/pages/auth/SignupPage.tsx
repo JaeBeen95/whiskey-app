@@ -12,7 +12,7 @@ import PasswordField from "@/pages/auth/components/PasswordField";
 import Input from "@/components/Input";
 
 export default function SignupPage() {
-  const { register, handleSubmit, errors, isValid, isLoading, passwordWatch } = useSignupForm();
+  const { register, handleSubmit, errors, isValid, isLoading } = useSignupForm();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-dark-gray-700 p-4 font-sans">
@@ -24,10 +24,7 @@ export default function SignupPage() {
             hasError={!!errors.username}
             type="text"
             placeholder="사용자 아이디"
-            {...register("username", {
-              required: "아이디는 필수입니다.",
-              minLength: { value: 4, message: "아이디는 최소 4자 이상이어야 합니다." },
-            })}
+            {...register("username")}
           />
         </FormField>
 
@@ -36,13 +33,7 @@ export default function SignupPage() {
           error={errors.password?.message}
           inputProps={{
             placeholder: "비밀번호",
-            ...register("password", {
-              required: "비밀번호는 필수입니다.",
-              minLength: {
-                value: 8,
-                message: "비밀번호는 최소 8자 이상이어야 합니다.",
-              },
-            }),
+            ...register("password"),
           }}
         />
         <PasswordField
@@ -50,10 +41,7 @@ export default function SignupPage() {
           error={errors.confirmPassword?.message}
           inputProps={{
             placeholder: "비밀번호 확인",
-            ...register("confirmPassword", {
-              required: "비밀번호 확인은 필수입니다.",
-              validate: (value) => value === passwordWatch || "비밀번호가 일치하지 않습니다.",
-            }),
+            ...register("confirmPassword"),
           }}
         />
         <div className="mb-6">
