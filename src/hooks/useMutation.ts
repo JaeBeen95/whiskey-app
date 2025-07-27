@@ -32,12 +32,8 @@ export const useMutation = <TData, TVariables>(
 
         try {
           const response = await mutationFn(variables);
-
-          if (response.error) {
-            throw response.error;
-          }
-
           responseData = response.data;
+
           setData(responseData);
           setStatus("success");
 

@@ -1,5 +1,5 @@
 import { createContext, useState, type ReactNode } from "react";
-import { whiskeyAppApiClient } from "@/api/client";
+import { setAccessToken } from "@/api/client";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -17,11 +17,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const setAuthToken = (token: string | null) => {
     if (token) {
       sessionStorage.setItem("accessToken", token);
-      whiskeyAppApiClient.setAccessToken(token);
+      setAccessToken(token);
       setIsLoggedIn(true);
     } else {
       sessionStorage.removeItem("accessToken");
-      whiskeyAppApiClient.setAccessToken(null);
+      setAccessToken(null);
       setIsLoggedIn(false);
     }
   };
