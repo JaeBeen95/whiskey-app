@@ -16,19 +16,20 @@ export const useQuery = <T>(options: UseQueryOptions<T>): UseQueryResult<T> => {
   const { data, setData, status, setStatus, error, setError, isLoading, isSuccess, isError } =
     useAsyncState<T>();
 
+  const abortControllerRef = useRef<AbortController | null>(null);
   const queryFnRef = useRef(queryFn);
   useEffect(() => {
     queryFnRef.current = queryFn;
   });
-
   const dataRef = useRef(data);
   useEffect(() => {
     dataRef.current = data;
   });
 
   const fetchData = useCallback(async () => {
-    const cachedData = queryClient.getQueryData<T>(serializedKey);
+    abortControllerRef.current?.abort();
 
+    const cachedData = queryClient.getQueryData<T>(serializedKey);
     const isDataFresh = !queryInstance.state.isStale;
 
     if (cachedData !== undefined && isDataFresh) {
@@ -43,6 +44,7 @@ export const useQuery = <T>(options: UseQueryOptions<T>): UseQueryResult<T> => {
     setError(null);
 
     const abortController = new AbortController();
+    abortControllerRef.current = abortController;
     const { signal } = abortController;
 
     try {
@@ -66,11 +68,11 @@ export const useQuery = <T>(options: UseQueryOptions<T>): UseQueryResult<T> => {
       if (signal.aborted) return;
       setError(err instanceof Error ? err : new Error("알 수 없는 오류가 발생했습니다."));
       setStatus("error");
+    } finally {
+      if (abortControllerRef.current === abortController) {
+        abortControllerRef.current = null;
+      }
     }
-
-    return () => {
-      abortController.abort();
-    };
   }, [serializedKey, queryClient, setData, setStatus, setError]);
 
   useEffect(() => {
