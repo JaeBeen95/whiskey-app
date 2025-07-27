@@ -12,7 +12,7 @@ export const useSignupMutation = () => {
   return useMutation({
     mutationFn: signup,
     onSuccess: () => {
-      queryClient.invalidateQueries(["me"]);
+      queryClient.invalidateQueries({ queryKey: ["me"] });
       alert("회원가입 성공");
       navigate("/login");
     },
@@ -34,7 +34,7 @@ export const useLoginMutation = () => {
         whiskeyAppApiClient.setAccessToken(data.accessToken);
         setAuthToken(data.accessToken);
       }
-      queryClient.invalidateQueries(["me"]);
+      queryClient.invalidateQueries({ queryKey: ["me"] });
       navigate("/dashboard");
     },
     onError: (err) => {

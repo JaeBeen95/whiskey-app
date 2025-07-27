@@ -45,7 +45,11 @@ export type UseMutationOptions<TData, TVariables> = {
   mutationFn: (variables: TVariables) => Promise<ApiResponse<TData>>;
   onSuccess?: (data: TData, variables: TVariables) => Promise<unknown> | unknown;
   onError?: (error: Error, variables: TVariables) => void;
-  onSettled?: (data: TData | undefined, error: Error | null, variables: TVariables) => Promise<unknown> | unknown;
+  onSettled?: (
+    data: TData | undefined,
+    error: Error | null,
+    variables: TVariables
+  ) => Promise<unknown> | unknown;
 };
 
 export type UseMutationResult<TData, TVariables> = {
@@ -54,9 +58,13 @@ export type UseMutationResult<TData, TVariables> = {
     callbacks?: {
       onSuccess?: (data: TData, variables: TVariables) => Promise<unknown> | unknown;
       onError?: (error: Error, variables: TVariables) => void;
-      onSettled?: (data: TData | undefined, error: Error | null, variables: TVariables) => Promise<unknown> | unknown;
+      onSettled?: (
+        data: TData | undefined,
+        error: Error | null,
+        variables: TVariables
+      ) => Promise<unknown> | unknown;
     }
-  ) => Promise<ApiResponse<TData> | undefined>;
+  ) => void;
   data: TData | undefined;
   status: AsyncStatus;
   error: Error | null;
