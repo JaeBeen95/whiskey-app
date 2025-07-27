@@ -1,7 +1,7 @@
 export interface ApiError extends Error {
   code?: string;
   message: string;
-  statusCode?: string;
+  statusCode?: number;
   statusText?: string;
   details?: string;
 }

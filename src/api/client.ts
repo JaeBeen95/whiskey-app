@@ -33,19 +33,17 @@ export const setAccessToken = (token: string | null) => {
 };
 
 export const createApiError = (error: AxiosError): ApiError => {
-  const apiError: ApiError = new Error("API 요청 실패") as ApiError;
+  const apiError: ApiError = new Error("API 요청 중에 오류가 발생했습니다.") as ApiError;
 
   if (error.response) {
-    apiError.statusCode = `${error.response.status}`;
-    apiError.statusText = error.response.statusText;
+    apiError.message = error.response.statusText || "서버 응답 에러";
+    apiError.statusCode = error.response.status;
     apiError.details = JSON.stringify(error.response.data || {});
   } else if (error.request) {
-    apiError.statusCode = "네트워크 오류";
     apiError.statusText = "네트워크 연결 문제";
     apiError.details =
       "서버로부터 응답을 받지 못했거나 요청이 취소되었습니다. 인터넷 연결을 확인해주세요.";
   } else {
-    apiError.statusCode = "요청 설정 오류";
     apiError.statusText = "요청 처리 중 예기치 않은 오류";
     apiError.details = error.message;
   }
