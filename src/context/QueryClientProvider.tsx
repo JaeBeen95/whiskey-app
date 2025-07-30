@@ -4,6 +4,7 @@ import type {
   QueryClientConfig,
   QueryOptions,
   QueryClientProviderProps,
+  SerializedQueryKey,
 } from "@/types/query";
 
 class QueryState<TData = unknown> {
@@ -83,17 +84,19 @@ export class QueryClient {
     this.defaultGcTime = config?.gcTime ?? 5 * 60 * 1000;
   }
 
-  getQueryData<TData>(queryKey: QueryKey): TData | undefined {
-    const serializedKey = this.getQueryKey(queryKey);
-    const queryCache = this.queryCache.get(serializedKey);
+  getQueryKey(queryKey: QueryKey): string {
+    return JSON.stringify(queryKey);
+  }
+
+  getQueryData<TData>(queryKey: SerializedQueryKey): TData | undefined {
+    const queryCache = this.queryCache.get(queryKey);
     return queryCache?.state.data as TData | undefined;
   }
 
   setQueryData<TData>(
-    queryKey: QueryKey,
+    queryKey: SerializedQueryKey,
     updater: TData | ((oldData: TData | undefined) => TData)
   ) {
-    const serializedKey = this.getQueryKey(queryKey);
     const queryState = this.ensureQuery<TData>(queryKey);
 
     const newData =
@@ -102,86 +105,74 @@ export class QueryClient {
         : updater;
 
     queryState.setQueryState(newData);
-    this.notifySubscribers(serializedKey);
+    this.notifySubscribers(queryKey);
   }
 
-  invalidateQueries(queryKey: QueryKey) {
-    const serializedKey = this.getQueryKey(queryKey);
-    const queryState = this.queryCache.get(serializedKey);
-    if (queryState) {
-      queryState.invalidate();
-      this.notifySubscribers(serializedKey);
+  invalidateQueries(options: { queryKey: QueryKey }) {
+    const serializedKey = JSON.stringify(options.queryKey);
+
+    this.queryCache.forEach((queryState, serializedQueryKey) => {
+      if (serializedQueryKey.startsWith(serializedKey.slice(0, -1))) {
+        queryState.invalidate();
+        this.notifySubscribers(serializedQueryKey);
+      }
+    });
+  }
+
+  subscribe(queryKey: SerializedQueryKey, callback: () => void) {
+    if (!this.querySubscribers.has(queryKey)) {
+      this.querySubscribers.set(queryKey, new Set());
     }
+    this.querySubscribers.get(queryKey)!.add(callback);
+
+    this.queryCache.get(queryKey)?.clearGcTimer();
   }
 
-  subscribe(queryKey: QueryKey, callback: () => void) {
-    const serializedKey = this.getQueryKey(queryKey);
-    if (!this.querySubscribers.has(serializedKey)) {
-      this.querySubscribers.set(serializedKey, new Set());
-    }
-    this.querySubscribers.get(serializedKey)!.add(callback);
-
-    this.queryCache.get(serializedKey)?.clearGcTimer();
-  }
-
-  unsubscribe(queryKey: QueryKey, callback: () => void) {
-    const serializedKey = this.getQueryKey(queryKey);
-    const subscribers = this.querySubscribers.get(serializedKey);
+  unsubscribe(queryKey: SerializedQueryKey, callback: () => void) {
+    const subscribers = this.querySubscribers.get(queryKey);
     if (!subscribers) return;
 
     subscribers.delete(callback);
     if (subscribers.size === 0) {
-      this.querySubscribers.delete(serializedKey);
-      const query = this.queryCache.get(serializedKey);
+      this.querySubscribers.delete(queryKey);
+      const query = this.queryCache.get(queryKey);
       query?.setGcTimer(() => {
-        this.queryCache.delete(serializedKey);
+        this.queryCache.delete(queryKey);
       });
     }
   }
 
-  private getQueryKey(queryKey: QueryKey): string {
-    return JSON.stringify(queryKey);
-  }
-
-  private ensureQuery<TData>(
-    queryKey: QueryKey,
+  ensureQuery<TData>(
+    queryKey: SerializedQueryKey,
     options?: { staleTime?: number; gcTime?: number }
   ): QueryState<TData> {
-    const serializedKey = this.getQueryKey(queryKey);
-    if (!this.queryCache.has(serializedKey)) {
+    if (!this.queryCache.has(queryKey)) {
       const newQueryState = new QueryState<TData>({
         initialData: undefined,
         defaultGcTime: options?.gcTime ?? this.defaultGcTime,
         defaultStaleTime: options?.staleTime ?? this.defaultStaleTime,
       });
-      this.queryCache.set(serializedKey, newQueryState);
+      this.queryCache.set(queryKey, newQueryState);
     }
-    return this.queryCache.get(serializedKey) as QueryState<TData>;
+    return this.queryCache.get(queryKey) as QueryState<TData>;
   }
 
-  private notifySubscribers(serializedKey: string) {
-    const subscribers = this.querySubscribers.get(serializedKey);
+  private notifySubscribers(queryKey: string) {
+    const subscribers = this.querySubscribers.get(queryKey);
     subscribers?.forEach((callback) => callback());
   }
 }
 
 const QueryClientContext = createContext<QueryClient | undefined>(undefined);
 
-export function QueryClientProvider({
-  children,
-  client,
-}: QueryClientProviderProps) {
-  return (
-    <QueryClientContext.Provider value={client}>
-      {children}
-    </QueryClientContext.Provider>
-  );
+export function QueryClientProvider({ children, client }: QueryClientProviderProps) {
+  return <QueryClientContext.Provider value={client}>{children}</QueryClientContext.Provider>;
 }
 
 export function useQueryClient() {
   const client = useContext(QueryClientContext);
   if (!client) {
-    throw new Error("useQueryClient은 QueryClientProvider 내부에서 사용해야 합니다");
+    throw new Error("useQueryClient는 QueryClientProvider 내부에서 사용해야 합니다");
   }
   return client;
 }

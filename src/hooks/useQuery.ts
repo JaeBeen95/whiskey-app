@@ -1,26 +1,35 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { useQueryClient } from "@/context/QueryClientProvider";
 import { useAsyncState } from "@/hooks/useAsyncState";
 import type { UseQueryOptions, UseQueryResult } from "@/types/query";
 
-export function useQuery<T>(options: UseQueryOptions<T>): UseQueryResult<T> {
+export const useQuery = <T>(options: UseQueryOptions<T>): UseQueryResult<T> => {
   const { queryKey, queryFn, enabled = true, staleTime, gcTime } = options;
 
   const queryClient = useQueryClient();
+  const serializedKey = queryClient.getQueryKey(queryKey);
+  const queryInstance = queryClient.ensureQuery<T>(serializedKey, {
+    staleTime,
+    gcTime,
+  });
 
   const { data, setData, status, setStatus, error, setError, isLoading, isSuccess, isError } =
     useAsyncState<T>();
-  const [isStale, setIsStale] = useState(false);
+
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const queryFnRef = useRef(queryFn);
+  useEffect(() => {
+    queryFnRef.current = queryFn;
+  });
+  const dataRef = useRef(data);
+  useEffect(() => {
+    dataRef.current = data;
+  });
 
   const fetchData = useCallback(async () => {
-    const queryInstance = queryClient["ensureQuery"]<T>(queryKey, {
-      staleTime: staleTime,
-      gcTime: gcTime,
-    });
-    const cachedData = queryClient.getQueryData<T>(queryKey);
+    abortControllerRef.current?.abort();
 
-    setIsStale(queryInstance.state.isStale);
-
+    const cachedData = queryClient.getQueryData<T>(serializedKey);
     const isDataFresh = !queryInstance.state.isStale;
 
     if (cachedData !== undefined && isDataFresh) {
@@ -35,16 +44,17 @@ export function useQuery<T>(options: UseQueryOptions<T>): UseQueryResult<T> {
     setError(null);
 
     const abortController = new AbortController();
+    abortControllerRef.current = abortController;
     const { signal } = abortController;
 
     try {
-      const response = await queryFn();
+      const response = await queryFnRef.current();
       if (signal.aborted) return;
 
       if (!response.error && response.data !== undefined) {
         const actualData: T = response.data;
 
-        queryClient.setQueryData<T>(queryKey, actualData);
+        queryClient.setQueryData<T>(serializedKey, actualData);
         setData(actualData);
         setStatus("success");
       } else if (response.error) {
@@ -58,12 +68,12 @@ export function useQuery<T>(options: UseQueryOptions<T>): UseQueryResult<T> {
       if (signal.aborted) return;
       setError(err instanceof Error ? err : new Error("알 수 없는 오류가 발생했습니다."));
       setStatus("error");
+    } finally {
+      if (abortControllerRef.current === abortController) {
+        abortControllerRef.current = null;
+      }
     }
-
-    return () => {
-      abortController.abort();
-    };
-  }, [queryKey, queryClient, data, setData, setStatus, setError, staleTime, gcTime, queryFn]);
+  }, [serializedKey, queryClient, setData, setStatus, setError]);
 
   useEffect(() => {
     if (enabled) {
@@ -71,35 +81,40 @@ export function useQuery<T>(options: UseQueryOptions<T>): UseQueryResult<T> {
     } else {
       setStatus("idle");
     }
-  }, [enabled, fetchData, setStatus]);
+  }, [enabled, setStatus, fetchData]);
 
   useEffect(() => {
     const listener = () => {
-      const latestCachedData = queryClient.getQueryData<T>(queryKey);
-      const queryInstance = queryClient["ensureQuery"]<T>(queryKey);
+      const latestCachedData = queryClient.getQueryData<T>(serializedKey);
 
-      const isLatestDataStale = queryInstance.state.isStale;
-
-      if (data !== latestCachedData || isStale !== isLatestDataStale) {
+      if (dataRef.current !== latestCachedData) {
         setData(latestCachedData);
-        setIsStale(isLatestDataStale);
 
-        if (isLatestDataStale && !isLoading && enabled) {
+        if (queryInstance.state.isStale && !isLoading && enabled) {
           fetchData();
         }
       }
     };
 
-    queryClient.subscribe(queryKey, listener);
+    queryClient.subscribe(serializedKey, listener);
     return () => {
-      queryClient.unsubscribe(queryKey, listener);
+      queryClient.unsubscribe(serializedKey, listener);
     };
-  }, [queryClient, queryKey, data, isStale, setData, fetchData, isLoading, enabled]);
+  }, [queryClient, serializedKey, data, fetchData, isLoading, enabled]);
 
   const refetch = useCallback(() => {
     setStatus("loading");
     fetchData();
   }, [fetchData, setStatus]);
 
-  return { data, refetch, isStale, isLoading, isSuccess, isError, status, error };
-}
+  return {
+    data,
+    refetch,
+    isStale: queryInstance.state.isStale,
+    isLoading,
+    isSuccess,
+    isError,
+    status,
+    error,
+  };
+};

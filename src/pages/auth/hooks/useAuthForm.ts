@@ -1,70 +1,60 @@
+import { useForm } from "react-hook-form";
 import { useLoginMutation, useSignupMutation } from "@/pages/auth/hooks/useAuthMutation";
-import { validateLoginForm, validateSignupForm } from "@/pages/auth/utils/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, signupSchema } from "@/pages/auth/utils/auth.schema";
+import type {
+  LoginFormData,
+  LoginFormValues,
+  SignupFormData,
+  SignupFormValues,
+} from "@/pages/auth/types";
 
 export const useSignupForm = () => {
-  const { mutate, ...signupMutationRest } = useSignupMutation();
+  const { mutate: signupMutate, isLoading } = useSignupMutation();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
+    mode: "all",
+  });
 
-    const form = e.currentTarget;
-    const usernameInput = form.elements.namedItem("username") as HTMLInputElement;
-    const passwordInput = form.elements.namedItem("password") as HTMLInputElement;
-    const confirmPasswordInput = form.elements.namedItem("confirm-password") as HTMLInputElement;
-
-    const username = (usernameInput?.value || "").trim();
-    const password = (passwordInput?.value || "").trim();
-    const confirmPassword = (confirmPasswordInput?.value || "").trim();
-
-    const validationError = validateSignupForm({ username, password, confirmPassword });
-
-    if (validationError) {
-      alert(validationError);
-      return;
-    }
-
-    if (signupMutationRest.isLoading) {
-      return;
-    }
-
-    await mutate({ username, password });
+  const onSubmit = (data: SignupFormData) => {
+    const { confirmPassword, ...submissionData } = data;
+    signupMutate(submissionData);
   };
 
   return {
-    handleSubmit,
-    ...signupMutationRest,
+    register,
+    handleSubmit: handleSubmit(onSubmit),
+    errors,
+    isValid,
+    isLoading,
   };
 };
 
 export const useLoginForm = () => {
-  const { mutate, ...loginMutationRest } = useLoginMutation();
+  const { mutate: loginMutate, isLoading } = useLoginMutation();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const form = e.currentTarget;
-    const usernameInput = form.elements.namedItem("username") as HTMLInputElement;
-    const passwordInput = form.elements.namedItem("password") as HTMLInputElement;
-
-    const username = (usernameInput?.value || "").trim();
-    const password = (passwordInput?.value || "").trim();
-
-    const validationError = validateLoginForm({ username, password });
-
-    if (validationError) {
-      alert(validationError);
-      return;
-    }
-
-    if (loginMutationRest.isLoading) {
-      return;
-    }
-
-    await mutate({ username, password });
-  };
-
-  return {
+  const {
+    register,
     handleSubmit,
-    ...loginMutationRest,
+    formState: { errors, isValid },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    mode: "onBlur",
+  });
+
+  const onSubmit = (data: LoginFormData) => {
+    loginMutate(data);
+  };
+  return {
+    register,
+    handleSubmit: handleSubmit(onSubmit),
+    errors,
+    isValid,
+    isLoading,
   };
 };

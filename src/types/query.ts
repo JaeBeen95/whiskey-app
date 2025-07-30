@@ -1,7 +1,8 @@
 import type { QueryClient } from "@/context/QueryClientProvider";
 import type { ApiResponse } from "@/types/api";
 
-export type QueryKey = string[];
+export type QueryKey = (string | number | boolean | object | null | undefined)[];
+export type SerializedQueryKey = string;
 
 export type AsyncStatus = "idle" | "loading" | "success" | "error";
 
@@ -40,25 +41,34 @@ export interface UseQueryResult<TData = unknown> {
   error: Error | null;
 }
 
-export interface UseMutationOptions<T, U> {
-  mutationFn: (variables: U) => Promise<ApiResponse<T>>;
-  onSuccess?: (data: T) => void;
-  onError?: (error: Error) => void;
-}
+export type UseMutationOptions<TData, TVariables> = {
+  mutationFn: (variables: TVariables) => Promise<ApiResponse<TData>>;
+  onSuccess?: (data: TData, variables: TVariables) => Promise<unknown> | unknown;
+  onError?: (error: Error, variables: TVariables) => void;
+  onSettled?: (
+    data: TData | undefined,
+    error: Error | null,
+    variables: TVariables
+  ) => Promise<unknown> | unknown;
+};
 
-export interface UseMutationResult<T, U> {
+export type UseMutationResult<TData, TVariables> = {
   mutate: (
-    variables: U,
+    variables: TVariables,
     callbacks?: {
-      onSuccess?: (data: T) => void;
-      onError?: (error: Error) => void;
-      onSettled?: (data: T | undefined, error: Error | null) => void;
+      onSuccess?: (data: TData, variables: TVariables) => Promise<unknown> | unknown;
+      onError?: (error: Error, variables: TVariables) => void;
+      onSettled?: (
+        data: TData | undefined,
+        error: Error | null,
+        variables: TVariables
+      ) => Promise<unknown> | unknown;
     }
-  ) => Promise<ApiResponse<T> | void>;
-  data: T | undefined;
+  ) => void;
+  data: TData | undefined;
   status: AsyncStatus;
   error: Error | null;
   isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
-}
+};

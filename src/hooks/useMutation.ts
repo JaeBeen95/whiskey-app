@@ -2,58 +2,64 @@ import { useCallback } from "react";
 import { useAsyncState } from "@/hooks/useAsyncState";
 import type { UseMutationOptions, UseMutationResult } from "@/types/query";
 
-export function useMutation<T, U>(options: UseMutationOptions<T, U>): UseMutationResult<T, U> {
-  const { mutationFn, onSuccess, onError } = options;
+export const useMutation = <TData, TVariables>(
+  options: UseMutationOptions<TData, TVariables>
+): UseMutationResult<TData, TVariables> => {
+  const { mutationFn, onSuccess, onError, onSettled } = options;
 
   const { data, setData, setStatus, setError, isLoading, isSuccess, isError, status, error } =
-    useAsyncState<T>();
+    useAsyncState<TData>();
 
   const mutate = useCallback(
-    async (
-      variables: U,
+    (
+      variables: TVariables,
       callbacks?: {
-        onSuccess?: (data: T) => void;
-        onError?: (error: Error) => void;
-        onSettled?: (data: T | undefined, error: Error | null) => void;
+        onSuccess?: (data: TData, variables: TVariables) => unknown;
+        onError?: (error: Error, variables: TVariables) => void;
+        onSettled?: (
+          data: TData | undefined,
+          error: Error | null,
+          variables: TVariables
+        ) => unknown;
       }
-    ) => {
-      setStatus("loading");
-      setError(null);
+    ): void => {
+      const executeMutation = async () => {
+        setStatus("loading");
+        setError(null);
 
-      let responseData: T | undefined;
-      let caughtError: Error | null = null;
+        let responseData: TData | undefined;
+        let caughtError: Error | null = null;
 
-      try {
-        const response = await mutationFn(variables);
+        try {
+          const response = await mutationFn(variables);
+          responseData = response.data;
 
-        if (response.error) {
-          throw response.error;
+          setData(responseData);
+          setStatus("success");
+
+          await Promise.resolve(
+            callbacks?.onSuccess?.(responseData!, variables) ??
+              onSuccess?.(responseData!, variables)
+          );
+        } catch (err) {
+          caughtError =
+            err instanceof Error ? err : new Error("알 수 없는 데이터 변경 오류가 발생했습니다.");
+          setError(caughtError);
+          setStatus("error");
+
+          callbacks?.onError?.(caughtError, variables) ?? onError?.(caughtError, variables);
+        } finally {
+          await Promise.resolve(
+            callbacks?.onSettled?.(responseData, caughtError, variables) ??
+              onSettled?.(responseData, caughtError, variables)
+          );
         }
+      };
 
-        responseData = response.data;
-        setData(responseData);
-        setStatus("success");
-
-        if (responseData !== undefined) {
-          onSuccess?.(responseData);
-          callbacks?.onSuccess?.(responseData);
-        }
-
-        return response;
-      } catch (err) {
-        caughtError =
-          err instanceof Error ? err : new Error("알 수 없는 데이터 변경 오류가 발생했습니다.");
-        setError(caughtError);
-        setStatus("error");
-
-        onError?.(caughtError);
-        callbacks?.onError?.(caughtError);
-      } finally {
-        callbacks?.onSettled?.(responseData, caughtError);
-      }
+      executeMutation();
     },
-    [mutationFn, onSuccess, onError, setData, setStatus, setError]
+    [mutationFn, onSuccess, onError, onSettled]
   );
 
   return { mutate, data, status, error, isLoading, isSuccess, isError };
-}
+};

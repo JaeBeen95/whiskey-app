@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@/context/QueryClientProvider";
 import { useMutation } from "@/hooks/useMutation";
 import { login, signup } from "@/pages/auth/api";
+import { useAuthState } from "@/hooks/useAuthState";
+import { setAccessToken } from "@/api/client";
 
 export const useSignupMutation = () => {
   const navigate = useNavigate();
@@ -10,7 +12,7 @@ export const useSignupMutation = () => {
   return useMutation({
     mutationFn: signup,
     onSuccess: () => {
-      queryClient.invalidateQueries(["me"]);
+      queryClient.invalidateQueries({ queryKey: ["me"] });
       alert("회원가입 성공");
       navigate("/login");
     },
@@ -23,11 +25,16 @@ export const useSignupMutation = () => {
 export const useLoginMutation = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { setAuthToken } = useAuthState();
 
   return useMutation({
     mutationFn: login,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["me"]);
+    onSuccess: (data) => {
+      if (data && data.accessToken) {
+        setAccessToken(data.accessToken);
+        setAuthToken(data.accessToken);
+      }
+      queryClient.invalidateQueries({ queryKey: ["me"] });
       navigate("/dashboard");
     },
     onError: (err) => {
